@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { getNames } from "country-list"; 
+import { getNames } from "country-list";
 
 export default function UserForm({ name }: { name: string }) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    country: "",
-    height: "",
-    weight: "",
-    physicalActivity: "",
-    cigarettesPerDay: "",
-    alcohol: "",
-    dietaryHabits: "",
+    Country: "",
+    Height: "",
+    Weight: "",
+    "Physical Activity": "",
+    "Cigarettes per Day": "",
+    "Alcohol Consumption": "",
   });
+  const [prediction, setPrediction] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const totalSteps = 6;
+  const totalSteps = 5;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,10 +27,43 @@ export default function UserForm({ name }: { name: string }) {
     }
   };
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const numericInput = [
+        parseFloat(formData.Height),
+        parseFloat(formData.Weight),
+        parseFloat(formData["Physical Activity"]),
+        parseFloat(formData["Cigarettes per Day"]),
+        parseFloat(formData["Alcohol Consumption"]),
+      ];
+
+      const response = await fetch("http://localhost:5000/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ input: numericInput }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPrediction(data.prediction[0]);
+      } else {
+        setError(data.error || "Something went wrong.");
+      }
+    } catch (err: any) {
+      setError("Network error: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const countries = getNames();
   const progressPercentage = (step / (totalSteps + 1)) * 100;
-
-  const countries = getNames(); 
-
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md text-slate-900">
@@ -44,13 +79,13 @@ export default function UserForm({ name }: { name: string }) {
         <div>
           <label className="block mb-2">Select your country:</label>
           <select
-            name="country"
-            value={formData.country}
+            name="Country"
+            value={formData.Country}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           >
             <option value="">Select your country</option>
-            {countries.map((country : string) => (
+            {countries.map((country: string) => (
               <option key={country} value={country}>
                 {country}
               </option>
@@ -63,18 +98,18 @@ export default function UserForm({ name }: { name: string }) {
         <div>
           <label className="block mb-2">Height (in cm):</label>
           <input
-            type="text"
-            name="height"
-            value={formData.height}
+            type="number"
+            name="Height"
+            value={formData.Height}
             onChange={handleChange}
             className="w-full p-2 border rounded mb-4"
           />
 
           <label className="block mb-2">Weight (in kg):</label>
           <input
-            type="text"
-            name="weight"
-            value={formData.weight}
+            type="number"
+            name="Weight"
+            value={formData.Weight}
             onChange={handleChange}
             className="w-full p-2 border rounded mb-4"
           />
@@ -85,9 +120,9 @@ export default function UserForm({ name }: { name: string }) {
         <div>
           <label className="block mb-2">Physical Activity Level:</label>
           <input
-            type="text"
-            name="physicalActivity"
-            value={formData.physicalActivity}
+            type="number"
+            name="Physical Activity"
+            value={formData["Physical Activity"]}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
@@ -96,43 +131,28 @@ export default function UserForm({ name }: { name: string }) {
 
       {step === 4 && (
         <div>
-      <label className="block mb-2">Number of Cigarettes per Day:</label>
-      <input
-        type="number"
-        name="cigarettesPerDay"
-        value={formData.cigarettesPerDay || ""}
-        onChange={handleChange}
-        className="w-full p-2 border rounded"
-        placeholder="Enter number of cigarettes"
-        min="0"
-      />
-    </div>
+          <label className="block mb-2">Number of Cigarettes per Day:</label>
+          <input
+            type="number"
+            name="Cigarettes per Day"
+            value={formData["Cigarettes per Day"]}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            min="0"
+          />
+        </div>
       )}
 
       {step === 5 && (
         <div>
           <label className="block mb-2">Alcohol Consumption (drinks per week):</label>
-        <input
-          type="number"
-          name="alcohol"
-          value={formData.alcohol || ""}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          placeholder=""
-          min="0"
-        />
-        </div>
-      )}
-
-      {step === 6 && (
-        <div>
-          <label className="block mb-2">Dietary Habits:</label>
           <input
-            type="text"
-            name="dietaryHabits"
-            value={formData.dietaryHabits}
+            type="number"
+            name="Alcohol Consumption"
+            value={formData["Alcohol Consumption"]}
             onChange={handleChange}
             className="w-full p-2 border rounded"
+            min="0"
           />
         </div>
       )}
@@ -165,12 +185,23 @@ export default function UserForm({ name }: { name: string }) {
               ))}
             </tbody>
           </table>
+
           <button
-            onClick={() => alert("Form Submitted Successfully!")}
+            onClick={handleSubmit}
             className="mt-4 w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
+
+          {prediction && (
+            <div className="mt-4 text-green-700 font-semibold">
+              ✅ Predicted Life Expectancy: <span className="font-bold">{prediction}</span> years
+            </div>
+          )}
+
+          {error && (
+            <div className="mt-4 text-red-600 font-semibold">❌ {error}</div>
+          )}
         </div>
       )}
     </div>
