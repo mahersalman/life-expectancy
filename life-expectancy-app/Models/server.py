@@ -1,35 +1,31 @@
 from flask import Flask, request, jsonify
-import joblib
+from flask_cors import CORS
+import pickle
 import numpy as np
 
 app = Flask(__name__)
+CORS(app)  # This will enable CORS for all routes
 
-# Load model and scaler
-model = joblib.load('xgboost_model.pkl')
-scaler = joblib.load('scaler.pkl')
+# Load the pre-trained XGBoost model from file
+with open("xgb_model.pkl", "rb") as f:
+    model = pickle.load(f)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        data = request.get_json()
-        input_data = data.get('input')
+    # Expecting JSON data with a key 'features' (a list of feature values)
+    data = request.get_json(force=True)
+    features = data.get('features', None)
+    if features is None:
+        return jsonify({'error': 'No features provided'}), 400
 
-        # Check input validity
-        if not input_data or not isinstance(input_data, list):
-            return jsonify({'error': 'Invalid input. Provide a list of features under key "input".'}), 400
-
-        # Convert to 2D array for scaler and model
-        input_array = np.array(input_data).reshape(1, -1)
-        scaled_input = scaler.transform(input_array)
-
-        # Make prediction
-        prediction = model.predict(scaled_input)
-
-        return jsonify({'prediction': prediction.tolist()})
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # Convert the list of features into a 2D array as required by the model
+    input_array = np.array(features).reshape(1, -1)
+    
+    # Perform prediction using the loaded model
+    prediction = model.predict(input_array)
+    
+    # Return the prediction as JSON
+    return jsonify({'prediction': prediction.tolist()})
 
 if __name__ == '__main__':
-    print("🚀 Server is running on http://localhost:5000")
-    app.run(port=5000)
+    app.run(debug=True)
