@@ -1,24 +1,10 @@
 'use client';
 import React, { useState } from 'react';
+import { PreviewProp } from '@/app/type';
 
-interface ResultProps {
-  Height: string;
-  Weight: string;
-  Alcohol: string;
-  Income: string;
-  Schooling: string;
-  Smoking: string;
-  Physical_Activity: string;
-}
-
-export default function Preview({ data }: { data: ResultProps }) {
+export default function Preview({ name, data, onNext, setResults }: PreviewProp) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState({
-    xgb: '',
-    saint: '',
-  });
-  const [loadResult, setLoadResult] = useState(false);
 
   const handleSubmit = async () => {
     setError('');
@@ -35,9 +21,9 @@ export default function Preview({ data }: { data: ResultProps }) {
       parseFloat(data.Smoking),
       parseFloat(data.Physical_Activity),
     ];
-
+    console.log('num',numericInput)
     try {
-      const response = await fetch("http://127.0.0.1:5000/predict", {
+      const response = await fetch("http://127.0.0.1:4001/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ features: numericInput }),
@@ -46,12 +32,11 @@ export default function Preview({ data }: { data: ResultProps }) {
       const result = await response.json();
 
       if (response.ok) {
-        setResult({
+        setResults({
           xgb: result.prediction[0],
           saint: result.prediction[1],
         });
-        setLoadResult(true);
-        console.log('Prediction:', result);
+        onNext();
       } else {
         setError(result.error || "Something went wrong.");
       }
@@ -63,67 +48,48 @@ export default function Preview({ data }: { data: ResultProps }) {
   };
 
   return (
-    <div className="p-4 border border-gray-300 rounded-lg bg-white shadow-md">
-      <h2 className="text-xl font-semibold mb-4 text-center text-blue-600">Review Your Details</h2>
+    <div className="bg-white rounded-xl shadow-xl p-8 max-w-xl w-full mx-auto">
+      <h2 className="text-2xl font-bold text-blue-700 mb-2 text-center">Almost there, {name}!</h2>
+      <p className="text-gray-600 text-center mb-6">Please confirm your details before submitting:</p>
 
-      <table className="w-full text-left border border-gray-300 mb-4">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 p-2">Field</th>
-            <th className="border border-gray-300 p-2">Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(data).map(([key, value]) => (
-            <tr key={key}>
-              <td className="border border-gray-300 p-2 font-medium capitalize">{key.replace('_', ' ')}</td>
-              <td className="border border-gray-300 p-2">{value}</td>
+      <div className="overflow-x-auto mb-6">
+        <table className="w-full border border-gray-200 rounded-md shadow-sm">
+          <thead>
+            <tr className="bg-gray-100 text-gray-700 text-sm">
+              <th className="p-3 border border-gray-200 text-left">Field</th>
+              <th className="p-3 border border-gray-200 text-left">Value</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {Object.entries(data).map(([key, value]) => (
+              <tr key={key} className="text-gray-800 text-sm hover:bg-gray-50 transition">
+                <td className="p-3 border border-gray-200 capitalize">{key.replace('_', ' ')}</td>
+                <td className="p-3 border border-gray-200">{value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {error && (
-        <p className="text-red-600 text-sm font-medium mb-2 text-center">{error}</p>
+        <p className="text-red-600 text-sm font-medium mb-4 text-center">{error}</p>
       )}
 
       {loading && (
-        <p className="text-gray-500 text-sm mb-2 text-center">Calculating prediction...</p>
+        <p className="text-blue-500 text-sm mb-4 text-center">Calculating prediction...</p>
       )}
 
       <button
         onClick={handleSubmit}
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
         disabled={loading}
+        className={`w-full py-3 font-semibold rounded-md transition duration-300 ${
+          loading
+            ? 'bg-blue-300 cursor-not-allowed'
+            : 'bg-blue-500 hover:bg-blue-600 text-white'
+        }`}
       >
-        {loading ? "Processing..." : "Submit"}
+        {loading ? 'Processing...' : 'Submit Prediction'}
       </button>
-
-      {loadResult && (
-        <div className="mt-6 p-6 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg shadow-md text-center">
-          <h3 className="text-xl font-bold text-blue-800 mb-4">Your Life Expectancy Prediction</h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div className="bg-white rounded-lg p-4 shadow border">
-              <h4 className="text-blue-600 font-semibold text-lg mb-2">XGBoost Model</h4>
-              <p className="text-2xl font-bold text-gray-800">{Number(result.xgb).toFixed(1)} <span className="text-sm text-gray-500">years</span></p>
-            </div>
-
-            <div className="bg-white rounded-lg p-4 shadow border">
-              <h4 className="text-purple-600 font-semibold text-lg mb-2">SAINT Model</h4>
-              <p className="text-2xl font-bold text-gray-800">{Number(result.saint).toFixed(1)} <span className="text-sm text-gray-500">years</span></p>
-            </div>
-
-            <div className="bg-white rounded-lg p-4 shadow border">
-              <h4 className="text-green-600 font-semibold text-lg mb-2">Final Prediction</h4>
-              <p className="text-2xl font-bold text-gray-800">
-                {((Number(result.xgb) + Number(result.saint)) / 2).toFixed(1)}
-                <span className="text-sm text-gray-500"> years (avg)</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
