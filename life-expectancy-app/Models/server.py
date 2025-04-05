@@ -11,8 +11,7 @@ from models import SAINT
 from augmentations import embed_data_mask
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
-
+CORS(app, origins="*", supports_credentials=True)
 # ---------------------
 # Load the XGBoost model
 # ---------------------
@@ -112,6 +111,5 @@ def index():
     return "Prediction Server Running"
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app.run(host="0.0.0.0", port=4001, debug=True)
 
