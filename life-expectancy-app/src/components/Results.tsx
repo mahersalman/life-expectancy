@@ -1,46 +1,90 @@
 'use client';
-import React from 'react';
-import { ResultsProps } from '@/app/type';
 
-export default function ResultsPage({ name, results }: ResultsProps) {
+import React, { useEffect, useState } from 'react';
+import type { FormData } from '@/app/type';
+
+interface Props {
+  data: FormData;
+}
+
+export default function Results({ data }: Props) {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [results, setResults] = useState<{ xgb: number; saint: number } | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      setError(null);
+      const numeric = [
+        data.sex === 'male' ? 0 : 1,
+        data.physicalHealthDays,
+        data.mentalHealthDays,
+        data.physicalActivities ? 1 : 0,
+        data.sleepHours,
+        data.hadHeartAttack ? 1 : 0,
+        data.hadAngina ? 1 : 0,
+        data.hadStroke ? 1 : 0,
+        data.hadAsthma ? 1 : 0,
+        data.hadCOPD ? 1 : 0,
+        data.hadDepressiveDisorder ? 1 : 0,
+        data.hadKidneyDisease ? 1 : 0,
+        data.hadArthritis ? 1 : 0,
+        data.hadDiabetes ? 1 : 0,
+        data.deafOrHardOfHearing ? 1 : 0,
+        data.blindOrVisionDifficulty ? 1 : 0,
+        data.difficultyConcentrating ? 1 : 0,
+        data.difficultyWalking ? 1 : 0,
+        data.difficultyDressingBathing ? 1 : 0,
+        data.difficultyErrands ? 1 : 0,
+        data.smokerStatus,
+        data.eCigaretteUsage,
+        60, // placeholder age
+        data.bmi,
+        data.alcoholDrinkers ? 1 : 0,
+        data.fluVaxLast12 ? 1 : 0,
+        data.pneumoVaxEver ? 1 : 0,
+        data.tetanusLast10Tdap ? 1 : 0,
+        data.highRiskLastYear ? 1 : 0,
+      ];
+
+      try {
+        const res = await fetch('/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ features: numeric }),
+        });
+        const json = await res.json();
+        if (res.ok)
+          setResults({ xgb: json.prediction[0], saint: json.prediction[1] });
+        else setError(json.error || 'Error occurred');
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(`Network error: ${e.message}`);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, [data]);
+
+  if (loading) return <p className="text-center">Loading predictions...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
+
   return (
-    <div className="mt-6 p-6 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg shadow-md text-center">
-      <h2 className="text-2xl font-bold text-blue-900 mb-2">Well done, {name}!</h2>
-      <p className="text-md text-gray-700 mb-6">
-        Based on your input, here’s your predicted life expectancy:
+    <div className="space-y-4 text-center">
+      <h2 className="text-2xl font-bold text-blue-600">Predictions</h2>
+      <p>
+        <strong>XGBoost:</strong> {results!.xgb}
       </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white rounded-lg p-4 shadow border">
-          <h4 className="text-blue-600 font-semibold text-lg mb-2">XGBoost Model</h4>
-          <p className="text-2xl font-bold text-gray-800">
-            {Number(results.xgb).toFixed(1)} <span className="text-sm text-gray-500">years</span>
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg p-4 shadow border">
-          <h4 className="text-purple-600 font-semibold text-lg mb-2">SAINT Model</h4>
-          <p className="text-2xl font-bold text-gray-800">
-            {Number(results.saint).toFixed(1)} <span className="text-sm text-gray-500">years</span>
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg p-4 shadow border">
-          <h4 className="text-green-600 font-semibold text-lg mb-2">Final Prediction</h4>
-          <p className="text-2xl font-bold text-gray-800">
-            {((Number(results.xgb) + Number(results.saint)) / 2).toFixed(1)}
-            <span className="text-sm text-gray-500"> years (avg)</span>
-          </p>
-        </div>
-      </div>
-
-      {/* 🔁 Restart Button */}
-      <button
-        onClick={() => window.location.reload()}
-        className="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-md transition duration-300"
-      >
-        Start Over
-      </button>
+      <p>
+        <strong>SAINT:</strong> {results!.saint}
+      </p>
     </div>
   );
 }
