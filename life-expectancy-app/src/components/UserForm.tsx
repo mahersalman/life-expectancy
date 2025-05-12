@@ -1,66 +1,88 @@
 'use client';
+
 import React, { useState } from 'react';
-import { UserFormProp } from '@/app/type';
+import { useNavigate } from 'react-router-dom';
+import RadioQuestion from './RadioQuestion';
+import type { FormData } from '@/app/type';
+import { questions } from '@/utils/Questions';
 
-export default function UserForm({ name, data, setData, onNext }: UserFormProp) {
-  const fields = [
-    { name: 'Height', label: 'Height (cm)', placeholder: 'Enter height' },
-    { name: 'Weight', label: 'Weight (kg)', placeholder: 'Enter weight' },
-    { name: 'Alcohol', label: 'Alcohol Consumption (liters/week)', placeholder: 'e.g. 1.5' },
-    { name: 'Income', label: 'Personal Income (USD/year)', placeholder: 'e.g. 20000' },
-    { name: 'Schooling', label: 'Schooling (years)', placeholder: 'e.g. 12' },
-    { name: 'Smoking', label: 'Smoking (per day)', placeholder: 'e.g. 15.5' },
-    { name: 'Physical_Activity', label: 'Physical activity (hours/week)', placeholder: 'e.g. 30.2' },
-  ];
+interface Props {
+  data: FormData;
+  setData: (data: FormData) => void;
+}
 
+export default function UserForm({ data, setData }: Props) {
   const [step, setStep] = useState(0);
-  const progress = ((step + 1) / (fields.length + 1)) * 100;
+  const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+  const total = questions.length;
+  const progress = Math.round(((step + 1) / total) * 100);
+
+  const handleRadioChange = (name: keyof FormData, rawValue: string) => {
+    let value: string | boolean | number = rawValue;
+    if (rawValue === 'true' || rawValue === 'false')
+      value = rawValue === 'true';
+    if (['smokerStatus', 'eCigaretteUsage'].includes(name)) value = +rawValue;
+    setData({ ...data, [name]: value });
   };
 
-  const handleNext = () => {
-    if (step === fields.length - 1) {
-      onNext(); // done
-    } else {
-      setStep((prev) => prev + 1);
-    }
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value ? +value : 0 });
   };
+
+  const next = () =>
+    step < total - 1 ? setStep((s) => s + 1) : navigate('/review');
+
+  const q = questions[step];
 
   return (
-    <div className="bg-white bg-opacity-90 rounded-xl shadow-lg p-10 max-w-md w-full text-center text-gray-900">
-      <h1 className="text-2xl font-bold mb-4">Hi {name}, let's take some details</h1>
-
+    <div className="space-y-6">
       {/* Progress Bar */}
-      <div className="relative w-full bg-gray-200 rounded-full h-6 mb-6">
-        <div className="bg-blue-500 h-6 rounded-full" style={{ width: `${progress}%` }} />
-        <div className="absolute inset-0 flex items-center justify-center text-sm font-semibold text-slate-700">
-          {progress.toFixed(0)}%
+      <div>
+        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+          <div
+            className="h-2 bg-blue-600 transition-width duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="text-sm text-gray-700 text-right">
+          Step {step + 1} of {total}
         </div>
       </div>
 
-      {/* Dynamic Input Field */}
-      <div className="mb-6 text-left">
-        <label htmlFor={fields[step].name} className="block text-gray-700 font-medium mb-2">
-          {fields[step].label}
-        </label>
-        <input
-          id={fields[step].name}
-          name={fields[step].name}
-          type="number"
-          placeholder={fields[step].placeholder}
-          value={data[fields[step].name as keyof typeof data]}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
+      {/* Question Card */}
+      <div className="bg-white/70 p-6 rounded-lg">
+        {q.type === 'radio' ? (
+          <RadioQuestion
+            label={q.label}
+            name={q.name}
+            options={q.options!}
+            value={`${data[q.name]}`}
+            onChange={handleRadioChange}
+          />
+        ) : (
+          <div className="flex flex-col items-center space-y-4">
+            <h3 className="text-2xl font-bold text-gray-800">{q.label}</h3>
+            <input
+              type="number"
+              name={String(q.name)}
+              min={q.min}
+              max={q.max}
+              value={data[q.name] as number}
+              onChange={handleNumberChange}
+              className="w-24 text-center p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 text-black"
+            />
+          </div>
+        )}
       </div>
 
+      {/* Next / Review Button */}
       <button
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-md transition duration-300"
-        onClick={handleNext}
+        onClick={next}
+        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-transform transform hover:scale-105"
       >
-        {step === fields.length - 1 ? 'Submit' : 'Next'}
+        {step < total - 1 ? 'Next' : 'Review Answers'}
       </button>
     </div>
   );

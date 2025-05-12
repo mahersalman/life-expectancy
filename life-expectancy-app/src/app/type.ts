@@ -1,40 +1,41 @@
-export type FormData = {
-    Height: string;
-    Weight: string;
-    Alcohol: string;
-    Income: string;
-    Schooling: string;
-    Smoking: string;
-    Physical_Activity: string;
-};
-
-export type result = {
-    xgb:string;
-    saint:string;
+export enum SmokingStatus {
+  Never = 0,
+  Former = 1,
+  SomeDays = 2,
+  EveryDay = 3,
 }
 
-export type PreviewProp = {
-    name: string;
-    data: FormData;
-    onNext: () => void;
-    setResults:React.Dispatch<React.SetStateAction<result>>
-};
+export interface FormData {
+  sex: 'male' | 'female';
+  physicalHealthDays: number;
+  mentalHealthDays: number;
+  physicalActivities: boolean;
+  sleepHours: number;
 
-export type UserFormProp = {
-    name: string;
-    data: FormData;
-    setData: React.Dispatch<React.SetStateAction<FormData>>;
-    onNext: () => void;
-};
+  hadHeartAttack: boolean;
+  hadAngina: boolean;
+  hadStroke: boolean;
+  hadAsthma: boolean;
+  hadCOPD: boolean;
+  hadDepressiveDisorder: boolean;
+  hadKidneyDisease: boolean;
+  hadArthritis: boolean;
+  hadDiabetes: boolean;
 
-export type HomePageProps = {
-    name: string;
-    setName: React.Dispatch<React.SetStateAction<string>>;
-    onNext: () => void;
-};
+  deafOrHardOfHearing: boolean;
+  blindOrVisionDifficulty: boolean;
+  difficultyConcentrating: boolean;
+  difficultyWalking: boolean;
+  difficultyDressingBathing: boolean;
+  difficultyErrands: boolean;
 
+  smokerStatus: SmokingStatus;
+  eCigaretteUsage: SmokingStatus;
 
-export type ResultsProps = {
-    name:string;
-    results:result;
-};
+  bmi: number;
+  alcoholDrinkers: boolean;
+  fluVaxLast12: boolean;
+  pneumoVaxEver: boolean;
+  tetanusLast10Tdap: boolean;
+  highRiskLastYear: boolean;
+}
