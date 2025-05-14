@@ -28,24 +28,21 @@ export const questions: Question[] = [
   },
   {
     name: 'physicalHealthDays',
-    label:
-      'In the past 30 days, how many days was your physical health not good? (0–30)',
+    label: 'In the past 30 days, how many days was your physical health not good? (0–30)',
     type: 'number',
     min: 0,
     max: 30,
   },
   {
     name: 'mentalHealthDays',
-    label:
-      'In the past 30 days, how many days was your mental health not good? (0–30)',
+    label: 'In the past 30 days, how many days was your mental health not good? (0–30)',
     type: 'number',
     min: 0,
     max: 30,
   },
   {
     name: 'physicalActivities',
-    label:
-      'Did you participate in any physical activity or exercise in the past month?',
+    label: 'Did you participate in any physical activity or exercise in the past month?',
     type: 'radio',
     options: [
       { label: 'No', value: 'false' },
@@ -70,8 +67,7 @@ export const questions: Question[] = [
   },
   {
     name: 'hadAngina',
-    label:
-      'Have you ever been diagnosed with angina or coronary heart disease? ',
+    label: 'Have you ever been diagnosed with angina or coronary heart disease? ',
     type: 'radio',
     options: [
       { label: 'No', value: 'false' },
@@ -116,8 +112,7 @@ export const questions: Question[] = [
   },
   {
     name: 'hadKidneyDisease',
-    label:
-      'Have you ever had kidney disease (excluding stones and infections)? ',
+    label: 'Have you ever had kidney disease (excluding stones and infections)? ',
     type: 'radio',
     options: [
       { label: 'No', value: 'false' },
@@ -153,8 +148,7 @@ export const questions: Question[] = [
   },
   {
     name: 'blindOrVisionDifficulty',
-    label:
-      'Are you blind or do you have serious difficulty seeing even with glasses? ',
+    label: 'Are you blind or do you have serious difficulty seeing even with glasses? ',
     type: 'radio',
     options: [
       { label: 'No', value: 'false' },
@@ -163,8 +157,7 @@ export const questions: Question[] = [
   },
   {
     name: 'difficultyConcentrating',
-    label:
-      'Do you have serious difficulty concentrating, remembering, or making decisions?',
+    label: 'Do you have serious difficulty concentrating, remembering, or making decisions?',
     type: 'radio',
     options: [
       { label: 'No', value: 'false' },
@@ -191,8 +184,7 @@ export const questions: Question[] = [
   },
   {
     name: 'difficultyErrands',
-    label:
-      'Do you have difficulty doing errands alone (e.g., shopping or visiting a doctor)? ',
+    label: 'Do you have difficulty doing errands alone (e.g., shopping or visiting a doctor)? ',
     type: 'radio',
     options: [
       { label: 'No', value: 'false' },
