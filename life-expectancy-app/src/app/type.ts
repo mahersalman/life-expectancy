@@ -1,17 +1,22 @@
-export enum SmokingStatus {
-  Never = 0,
-  Former = 1,
-  SomeDays = 2,
-  EveryDay = 3,
+export type SmokingStatus = 0 | 1 | 2 | 3;
+export type ECigaretteUsage = 0 | 1 | 2 | 3;
+
+export interface PersonalInfo {
+  age: number;
+  height: number;
+  weight: number;
 }
 
-export interface FormData {
-  sex: 'male' | 'female';
-  physicalHealthDays: number;
-  mentalHealthDays: number;
+export interface Lifestyle {
+  sex: boolean; // true = Female, false = Male
+  smokerStatus: SmokingStatus;
+  eCigaretteUsage: ECigaretteUsage;
   physicalActivities: boolean;
   sleepHours: number;
+  alcoholDrinkers: boolean;
+}
 
+export interface MedicalHistory {
   hadHeartAttack: boolean;
   hadAngina: boolean;
   hadStroke: boolean;
@@ -21,21 +26,24 @@ export interface FormData {
   hadKidneyDisease: boolean;
   hadArthritis: boolean;
   hadDiabetes: boolean;
-
   deafOrHardOfHearing: boolean;
   blindOrVisionDifficulty: boolean;
   difficultyConcentrating: boolean;
   difficultyWalking: boolean;
   difficultyDressingBathing: boolean;
   difficultyErrands: boolean;
+}
 
-  smokerStatus: SmokingStatus;
-  eCigaretteUsage: SmokingStatus;
-
-  bmi: number;
-  alcoholDrinkers: boolean;
+export interface PreventiveCare {
   fluVaxLast12: boolean;
   pneumoVaxEver: boolean;
   tetanusLast10Tdap: boolean;
   highRiskLastYear: boolean;
+}
+
+export interface FormData {
+  personalInfo: PersonalInfo;
+  lifestyle: Lifestyle;
+  medicalHistory: MedicalHistory;
+  preventiveCare: PreventiveCare;
 }

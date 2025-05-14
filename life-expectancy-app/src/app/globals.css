@@ -13,9 +13,26 @@
     --foreground: #ededed;
   }
 }
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-gradient-to-br from-blue-50 to-green-100;
+}
+.blob {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: -100px; left: -100px;
+  background: rgba(255,255,255,0.3);
+  /* Rough “blob” shape via clip-path */
+  clip-path: polygon(60% 0%, 100% 40%, 80% 100%, 30% 90%, 0% 50%);
+}
+
+.clip-card {
+  clip-path: polygon(
+    0% 5%,      /* top-left inset down a little */
+    100% 0%,    /* top-right */
+    95% 100%,   /* bottom-right inset up a little */
+    0% 95%      /* bottom-left */
+  );
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(10px);
 }
