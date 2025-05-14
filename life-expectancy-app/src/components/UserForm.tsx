@@ -1,89 +1,71 @@
+// src/components/UserForm.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import RadioQuestion from './RadioQuestion';
-import type { FormData } from '@/app/type';
-import { questions } from '@/utils/Questions';
+import { motion } from 'framer-motion';
+import { useLottie } from '@/context/LottieContext';
 
-interface Props {
-  data: FormData;
-  setData: (data: FormData) => void;
-}
+import PersonalInfoForm from './PersonalInfoForm';
+import LifestyleForm from './LifestyleForm';
+import MedicalHistoryForm from './MedicalHistoryForm';
+import PreventiveCareForm from './PreventiveCareForm';
 
-export default function UserForm({ data, setData }: Props) {
-  const [step, setStep] = useState(0);
+export default function UserForm() {
   const navigate = useNavigate();
+  const { setAnimationKey } = useLottie();
+  const [step, setStep] = useState(0);
+  const total = 4;
 
-  const total = questions.length;
-  const progress = Math.round(((step + 1) / total) * 100);
+  useEffect(() => {
+    const keys = ['step1', 'step2', 'step3', 'step4'] as const;
+    setAnimationKey(keys[step]);
+  }, [step, setAnimationKey]);
 
-  const handleRadioChange = (name: keyof FormData, rawValue: string) => {
-    let value: string | boolean | number = rawValue;
-    if (rawValue === 'true' || rawValue === 'false')
-      value = rawValue === 'true';
-    if (['smokerStatus', 'eCigaretteUsage'].includes(name)) value = +rawValue;
-    setData({ ...data, [name]: value });
+  const next = () => (step < total - 1 ? setStep((s) => s + 1) : navigate('/review'));
+  const back = () => step > 0 && setStep((s) => s - 1);
+
+  const renderStep = () => {
+    switch (step) {
+      case 0:
+        return <PersonalInfoForm />;
+      case 1:
+        return <LifestyleForm />;
+      case 2:
+        return <MedicalHistoryForm />;
+      case 3:
+        return <PreventiveCareForm />;
+      default:
+        return null;
+    }
   };
-
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value ? +value : 0 });
-  };
-
-  const next = () =>
-    step < total - 1 ? setStep((s) => s + 1) : navigate('/review');
-
-  const q = questions[step];
 
   return (
-    <div className="space-y-6">
-      {/* Progress Bar */}
-      <div>
-        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-          <div
-            className="h-2 bg-blue-600 transition-width duration-300"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <div className="text-sm text-gray-700 text-right">
-          Step {step + 1} of {total}
-        </div>
-      </div>
+    <motion.div
+      className="relative flex flex-col" /* removed h-full */
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* 🌟 renderStep itself is sized via its own max-w */}
+      <div className="pr-4">{renderStep()}</div>
 
-      {/* Question Card */}
-      <div className="bg-white/70 p-6 rounded-lg">
-        {q.type === 'radio' ? (
-          <RadioQuestion
-            label={q.label}
-            name={q.name}
-            options={q.options!}
-            value={`${data[q.name]}`}
-            onChange={handleRadioChange}
-          />
-        ) : (
-          <div className="flex flex-col items-center space-y-4">
-            <h3 className="text-2xl font-bold text-gray-800">{q.label}</h3>
-            <input
-              type="number"
-              name={String(q.name)}
-              min={q.min}
-              max={q.max}
-              value={data[q.name] as number}
-              onChange={handleNumberChange}
-              className="w-24 text-center p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 text-black"
-            />
-          </div>
-        )}
+      {/* Sticky nav at bottom */}
+      <div className="mt-6 pt-6 border-t flex justify-between">
+        <button
+          onClick={back}
+          disabled={step === 0}
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50"
+        >
+          Back
+        </button>
+        <button
+          onClick={next}
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          {step < total - 1 ? 'Next' : 'Review'}
+        </button>
       </div>
-
-      {/* Next / Review Button */}
-      <button
-        onClick={next}
-        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-transform transform hover:scale-105"
-      >
-        {step < total - 1 ? 'Next' : 'Review Answers'}
-      </button>
-    </div>
+    </motion.div>
   );
 }

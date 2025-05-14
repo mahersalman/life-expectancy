@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import ClientRouter from './ClientRouter';
+import { LottieProvider } from '@/context/LottieContext';
+import { FormProvider } from '@/context/FormContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,10 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ClientRouter>{children}</ClientRouter>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ClientRouter>
+          <FormProvider>
+            <LottieProvider>{children}</LottieProvider>
+          </FormProvider>
+        </ClientRouter>
       </body>
     </html>
   );
