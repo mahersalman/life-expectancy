@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLottie } from '@/context/LottieContext';
 
@@ -13,10 +13,27 @@ import PreventiveCareForm from './PreventiveCareForm';
 
 export default function UserForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setAnimationKey } = useLottie();
-  const [step, setStep] = useState(0);
-  const total = 4;
 
+  const total = 4;
+  // Parse ?step=N
+  const params = new URLSearchParams(location.search);
+  const paramStep = Number(params.get('step'));
+  const initialStep = !isNaN(paramStep) && paramStep >= 0 && paramStep < total ? paramStep : 0;
+
+  const [step, setStep] = useState(initialStep);
+
+  // Keep URL in sync (optional)
+  useEffect(() => {
+    const search = new URLSearchParams(location.search);
+    if (search.get('step') !== String(step)) {
+      search.set('step', String(step));
+      navigate({ pathname: location.pathname, search: search.toString() }, { replace: true });
+    }
+  }, [step, navigate, location.pathname, location.search]);
+
+  // Swap lottie based on step
   useEffect(() => {
     const keys = ['welcome', 'dance', 'welcome', 'dance'] as const;
     setAnimationKey(keys[step]);
@@ -42,15 +59,15 @@ export default function UserForm() {
 
   return (
     <motion.div
-      className="relative flex flex-col" /* removed h-full */
+      className="relative flex flex-col"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* 🌟 renderStep itself is sized via its own max-w */}
+      {/* current step */}
       <div className="pr-4">{renderStep()}</div>
 
-      {/* Sticky nav at bottom */}
+      {/* nav */}
       <div className="mt-6 pt-6 border-t flex justify-between">
         <button
           onClick={back}
