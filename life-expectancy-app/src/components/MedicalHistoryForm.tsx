@@ -7,12 +7,12 @@ import { useFormContext } from '@/context/FormContext';
 import { medicalHistoryQuestions } from '@/utils/Questions';
 
 export default function MedicalHistoryForm() {
-  const { formData, setFormFormData } = useFormContext();
+  const { formData, setFormData } = useFormContext();
   const { medicalHistory } = formData;
 
   const handleChange = (name: string, raw: string) => {
     const value = raw === '1';
-    setFormFormData((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       medicalHistory: { ...prev.medicalHistory, [name]: value },
     }));
