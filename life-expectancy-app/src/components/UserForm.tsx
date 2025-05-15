@@ -18,7 +18,7 @@ export default function UserForm() {
   const total = 4;
 
   useEffect(() => {
-    const keys = ['step1', 'step2', 'step3', 'step4'] as const;
+    const keys = ['welcome', 'dance', 'welcome', 'dance'] as const;
     setAnimationKey(keys[step]);
   }, [step, setAnimationKey]);
 
