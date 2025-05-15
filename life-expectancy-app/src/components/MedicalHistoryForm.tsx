@@ -1,7 +1,7 @@
 // src/components/MedicalHistoryForm.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { medicalHistoryQuestions } from '@/utils/Questions';
@@ -9,12 +9,6 @@ import { medicalHistoryQuestions } from '@/utils/Questions';
 export default function MedicalHistoryForm() {
   const { formData, setFormFormData } = useFormContext();
   const { medicalHistory } = formData;
-
-  // pagination state
-  const pageSize = 10;
-  const radios = medicalHistoryQuestions.filter((q) => q.type === 'radio');
-  const pageCount = Math.ceil(radios.length / pageSize);
-  const [page, setPage] = useState(0);
 
   const handleChange = (name: string, raw: string) => {
     const value = raw === '1';
@@ -24,17 +18,18 @@ export default function MedicalHistoryForm() {
     }));
   };
 
-  const visible = radios.slice(page * pageSize, (page + 1) * pageSize);
+  // only keep radio questions
+  const radios = medicalHistoryQuestions.filter((q) => q.type === 'radio');
 
   return (
     <div className="relative p-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg w-full max-w-2xl mx-auto">
-      {/* Red accent */}
+      {/* Red accent circle */}
       <div
         className="absolute -top-10 -right-10 w-32 h-32 bg-red-100 rounded-full mix-blend-multiply opacity-50"
         aria-hidden
       />
 
-      {/* Header */}
+      {/* Step header */}
       <motion.div
         className="mb-6 text-center"
         initial={{ opacity: 0, y: -10 }}
@@ -48,23 +43,23 @@ export default function MedicalHistoryForm() {
         <p className="mt-2 text-gray-600">Any diagnoses or conditions we should know about?</p>
       </motion.div>
 
-      {/* Table window */}
+      {/* Scrollable question window (8 rows high) */}
       <motion.div
-        className="overflow-x-auto"
+        className="overflow-y-auto max-h-[40rem] pr-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
         <table className="w-full table-auto border-separate border-spacing-y-2">
           <tbody>
-            {visible.map((q) => {
+            {radios.map((q) => {
               const current = (medicalHistory as any)[q.name] as boolean;
               return (
                 <tr key={q.name} className="bg-white rounded-lg shadow-sm">
-                  <td className="p-4 align-top text-gray-800 w-3/4">
+                  <td className="p-4 text-gray-800 w-3/4 align-top">
                     <span className="font-medium">{q.question}</span>
                   </td>
-                  <td className="p-4 align-top w-1/4">
+                  <td className="p-4 w-1/4 align-top">
                     <div className="flex justify-around">
                       {q.options.map((opt) => {
                         const isSelected = current === (opt.value === '1');
@@ -96,27 +91,6 @@ export default function MedicalHistoryForm() {
           </tbody>
         </table>
       </motion.div>
-
-      {/* Pager controls */}
-      <div className="mt-4 flex justify-center space-x-4">
-        <button
-          onClick={() => setPage((p) => Math.max(0, p - 1))}
-          disabled={page === 0}
-          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50"
-        >
-          Next
-        </button>
-        <span className="self-center text-gray-600">
-          {page * pageSize + 1}–{Math.min((page + 1) * pageSize, radios.length)} of {radios.length}
-        </span>
-        <button
-          onClick={() => setPage((p) => Math.min(pageCount - 1, p + 1))}
-          disabled={page === pageCount - 1}
-          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50"
-        >
-          Prev
-        </button>
-      </div>
     </div>
   );
 }
