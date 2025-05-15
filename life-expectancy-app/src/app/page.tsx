@@ -1,4 +1,3 @@
-// src/components/Main.tsx
 'use client';
 import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
