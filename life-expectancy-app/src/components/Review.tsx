@@ -1,3 +1,4 @@
+// src/components/Review.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -23,7 +24,7 @@ const steps = [
 export default function Review() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [dir, setDir] = useState(0); // +1 for next, -1 for prev
+  const [dir, setDir] = useState(0);
 
   const prev = () => {
     if (step > 0) {
@@ -39,8 +40,13 @@ export default function Review() {
     }
   };
 
+  // Jump back to form and select the same step
+  const handleEdit = () => {
+    navigate(`/form?step=${step}`);
+  };
+
   return (
-    <div className="flex flex-col items-center space-y-6 w-full">
+    <div className="flex flex-col items-center space-y-6 w-full px-4 md:px-0">
       {/* slider viewport */}
       <div className="relative w-full max-w-3xl h-[60vh] overflow-hidden">
         <AnimatePresence initial={false} exitBeforeEnter>
@@ -57,6 +63,7 @@ export default function Review() {
               questions={steps[step].questions}
               title={steps[step].title}
               className="h-full w-full"
+              onEdit={handleEdit}
             />
           </motion.div>
         </AnimatePresence>

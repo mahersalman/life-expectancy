@@ -10,9 +10,16 @@ interface Props {
   questions: Question[];
   title: string;
   className?: string;
+  onEdit?: () => void;
 }
 
-export default function ReviewCard({ categoryKey, questions, title, className = '' }: Props) {
+export default function ReviewCard({
+  categoryKey,
+  questions,
+  title,
+  className = '',
+  onEdit,
+}: Props) {
   const { formData } = useFormContext();
   const answers = (formData as any)[categoryKey];
 
@@ -29,17 +36,41 @@ export default function ReviewCard({ categoryKey, questions, title, className = 
   return (
     <div
       className={`
-        h-full w-full bg-white rounded-2xl shadow-lg
+        h-full w-full
+        bg-white rounded-2xl shadow-lg
         p-6 overflow-auto
+        border border-gray-200
         ${className}
       `}
     >
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">{title}</h2>
-      <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* header with Edit */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-3xl font-bold text-indigo-700 uppercase tracking-wide">{title}</h2>
+        {onEdit && (
+          <button
+            onClick={onEdit}
+            className="
+              text-sm font-medium text-indigo-600
+              hover:text-indigo-800 transition
+            "
+          >
+            Edit
+          </button>
+        )}
+      </div>
+
+      <dl className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {questions.map((q) => (
-          <div key={q.name} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <dt className="text-sm font-medium text-gray-600">{q.label}</dt>
-            <dd className="mt-1 text-lg font-semibold text-indigo-700">{formatAnswer(q)}</dd>
+          <div
+            key={q.name}
+            className="
+              p-5 bg-gray-50 rounded-lg shadow-sm
+              border-l-4 border-indigo-500
+              hover:shadow-md transition-shadow
+            "
+          >
+            <dt className="text-base font-medium text-indigo-600 mb-1">{q.label}</dt>
+            <dd className="text-lg font-semibold text-gray-800">{formatAnswer(q)}</dd>
           </div>
         ))}
       </dl>
