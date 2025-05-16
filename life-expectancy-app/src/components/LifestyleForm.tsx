@@ -11,7 +11,7 @@ export default function LifestyleForm() {
   const { lifestyle } = formData;
 
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {
-    let value: any;
+    let value: unknown;
     if (type === 'number') {
       value = Number(raw) || 0;
     } else if (name === 'smokerStatus' || name === 'eCigaretteUsage') {
@@ -60,7 +60,7 @@ export default function LifestyleForm() {
         transition={{ delay: 0.2 }}
       >
         {lifestyleQuestions.map((q) => {
-          const current = (lifestyle as any)[q.name];
+          const current = lifestyle[q.name as keyof typeof lifestyle];
 
           // Number fields
           if (q.type === 'number') {

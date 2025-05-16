@@ -49,7 +49,7 @@ export default function Review() {
     <div className="flex flex-col items-center space-y-6 w-full px-4 md:px-0">
       {/* slider viewport */}
       <div className="relative w-full max-w-3xl h-[60vh] overflow-hidden">
-        <AnimatePresence initial={false} exitBeforeEnter>
+        <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={step}
             initial={{ x: dir > 0 ? 200 : -200, opacity: 0 }}
