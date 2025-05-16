@@ -15,11 +15,24 @@ type AllFieldKeys =
   | keyof PreventiveCare;
 
 export const tips: Record<AllFieldKeys, TipCondition<never>[]> = {
-  // PersonalInfo (no tips)
+  // PersonalInfo
   age: [],
   height: [],
   weight: [],
-
+  bmi: [
+    {
+      check: (v: number) => v <= 18.5,
+      message: 'BMI ≤ 18.5: associated with ~4 years reduction in life expectancy.',
+    },
+    {
+      check: (v: number, allData?: FormData) => v >= 30 && allData?.personalInfo.sex === 'Male',
+      message: 'BMI ≥ 30: associated with ~4.2 years reduction.',
+    },
+    {
+      check: (v: number, allData?: FormData) => v >= 30 && allData?.personalInfo.sex === 'Female',
+      message: 'BMI ≥ 30: associated with ~3.5 years reduction.',
+    },
+  ],
   // Lifestyle
   smokerStatus: [
     {

@@ -6,7 +6,6 @@ import { tips, TipCondition } from '@/utils/tips';
 
 export default function Tips() {
   const { formData } = useFormContext();
-
   // flatten all four parts into one object
   const flatData: Record<string, unknown> = {
     ...formData.personalInfo,

@@ -6,6 +6,7 @@ export interface PersonalInfo {
   height: number;
   weight: number;
   sex: string;
+  bmi: number;
 }
 
 export interface Lifestyle {
