@@ -1,4 +1,3 @@
-// src/components/Review.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -7,24 +6,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import ReviewCard from './ReviewCard';
-import {
-  personalInfoQuestions,
-  lifestyleQuestions,
-  medicalHistoryQuestions,
-  preventiveCareQuestions,
-} from '@/utils/Questions';
 
 const steps = [
-  { key: 'personalInfo' as const, title: 'Personal Information', questions: personalInfoQuestions },
-  { key: 'lifestyle' as const, title: 'Lifestyle Habits', questions: lifestyleQuestions },
-  { key: 'medicalHistory' as const, title: 'Medical History', questions: medicalHistoryQuestions },
-  { key: 'preventiveCare' as const, title: 'Preventive Care', questions: preventiveCareQuestions },
+  { key: 'personalInfo' as const, title: 'Personal Information' },
+  { key: 'lifestyle' as const, title: 'Lifestyle Habits' },
+  { key: 'medicalHistory' as const, title: 'Medical History' },
+  { key: 'preventiveCare' as const, title: 'Preventive Care' },
 ];
 
 export default function Review() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [dir, setDir] = useState(0);
+  const [dir, setDir] = useState(0); // +1: next, -1: prev
 
   const prev = () => {
     if (step > 0) {
@@ -32,7 +25,6 @@ export default function Review() {
       setStep((s) => s - 1);
     }
   };
-
   const next = () => {
     if (step < steps.length - 1) {
       setDir(1);
@@ -40,7 +32,7 @@ export default function Review() {
     }
   };
 
-  // Jump back to form and select the same step
+  // jump back to that form section
   const handleEdit = () => {
     navigate(`/form?step=${step}`);
   };
@@ -60,34 +52,32 @@ export default function Review() {
           >
             <ReviewCard
               categoryKey={steps[step].key}
-              questions={steps[step].questions}
               title={steps[step].title}
-              className="h-full w-full"
               onEdit={handleEdit}
             />
           </motion.div>
         </AnimatePresence>
 
-        {/* left arrow */}
+        {/* ← */}
         <button
           onClick={prev}
           disabled={step === 0}
           className="
             absolute left-2 top-1/2 transform -translate-y-1/2
-            bg-white/80 hover:bg-white p-2 rounded-full shadow
+            bg-white/80 p-2 rounded-full shadow hover:bg-white
             disabled:opacity-40 disabled:cursor-not-allowed
           "
         >
           <ChevronLeft size={24} className="text-gray-600" />
         </button>
 
-        {/* right arrow */}
+        {/* → */}
         <button
           onClick={next}
           disabled={step === steps.length - 1}
           className="
             absolute right-2 top-1/2 transform -translate-y-1/2
-            bg-white/80 hover:bg-white p-2 rounded-full shadow
+            bg-white/80 p-2 rounded-full shadow hover:bg-white
             disabled:opacity-40 disabled:cursor-not-allowed
           "
         >

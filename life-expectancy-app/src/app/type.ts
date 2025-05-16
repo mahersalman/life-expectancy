@@ -5,10 +5,10 @@ export interface PersonalInfo {
   age: number;
   height: number;
   weight: number;
+  sex: string;
 }
 
 export interface Lifestyle {
-  sex: boolean; // true = Female, false = Male
   smokerStatus: SmokingStatus;
   eCigaretteUsage: ECigaretteUsage;
   physicalActivities: boolean;

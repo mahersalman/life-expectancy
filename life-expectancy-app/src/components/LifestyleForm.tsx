@@ -11,13 +11,17 @@ export default function LifestyleForm() {
   const { lifestyle } = formData;
 
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {
-    let value: unknown;
+    let value: number | boolean = 0;
     if (type === 'number') {
       value = Number(raw) || 0;
-    } else if (name === 'smokerStatus' || name === 'eCigaretteUsage') {
-      value = Number(raw);
     } else {
-      value = raw === '1';
+      // enums
+      if (name === 'smokerStatus' || name === 'eCigaretteUsage') {
+        value = Number(raw);
+      } else {
+        // all other radios are booleans
+        value = raw === '1';
+      }
     }
     setFormData((prev) => ({
       ...prev,
@@ -62,7 +66,6 @@ export default function LifestyleForm() {
         {lifestyleQuestions.map((q) => {
           const current = lifestyle[q.name as keyof typeof lifestyle];
 
-          // Number fields
           if (q.type === 'number') {
             return (
               <div key={q.name} className="flex flex-col items-center">
@@ -87,13 +90,12 @@ export default function LifestyleForm() {
             );
           }
 
-          // Radio fields
-          const isEnumGroup = q.name === 'smokerStatus' || q.name === 'eCigaretteUsage';
+          const isEnumGroup = ['smokerStatus', 'eCigaretteUsage'].includes(q.name);
+          const isBoolGroup = ['physicalActivities', 'alcoholDrinkers'].includes(q.name);
 
           return (
             <fieldset key={q.name} className="flex flex-col items-center">
               <legend className="mb-2 font-medium text-gray-700 text-center">{q.question}</legend>
-
               <div
                 className={
                   isEnumGroup ? 'grid grid-cols-4 gap-4 w-full max-w-xl' : 'grid grid-cols-2 gap-4'
@@ -102,7 +104,9 @@ export default function LifestyleForm() {
                 {q.options.map((opt) => {
                   const selected = isEnumGroup
                     ? current === Number(opt.value)
-                    : String(current) === opt.value;
+                    : isBoolGroup
+                      ? current === (opt.value === '1')
+                      : false;
 
                   return (
                     <label
