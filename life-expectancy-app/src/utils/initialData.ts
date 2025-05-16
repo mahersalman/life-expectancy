@@ -13,6 +13,7 @@ export const initialPersonalInfo: PersonalInfo = {
   height: 0,
   weight: 0,
   sex: 'Male',
+  bmi: 0,
 };
 
 export const initialLifestyle: Lifestyle = {

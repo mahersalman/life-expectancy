@@ -1,7 +1,7 @@
 // src/components/PersonalInfoForm.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { personalInfoQuestions } from '@/utils/Questions';
@@ -9,6 +9,25 @@ import { personalInfoQuestions } from '@/utils/Questions';
 export default function PersonalInfoForm() {
   const { formData, setFormData } = useFormContext();
   const { personalInfo } = formData;
+  const { height, weight } = personalInfo;
+
+  // Recalculate BMI whenever height or weight change
+  useEffect(() => {
+    if (height > 0 && weight > 0) {
+      const rawBmi = weight / Math.pow(height / 100, 2);
+      const bmi = parseFloat(rawBmi.toFixed(1));
+      if (bmi !== personalInfo.bmi) {
+        setFormData((prev) => ({
+          ...prev,
+          personalInfo: {
+            ...prev.personalInfo,
+            bmi,
+          },
+        }));
+      }
+    }
+    console.log('bmi = ', formData.personalInfo.bmi);
+  }, [height, weight, personalInfo.bmi, setFormData]);
 
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {
     let value: number | string;
@@ -16,15 +35,14 @@ export default function PersonalInfoForm() {
     if (type === 'number') {
       value = Number(raw) || 0;
     } else {
+      // Only 'sex' is radio here → store the label
       if (name === 'sex') {
-        // lookup the label for this value
-        const question = personalInfoQuestions.find((q) => q.name === 'sex');
-        const opt = question?.type === 'radio' && question.options?.find((o) => o.value === raw);
+        const q = personalInfoQuestions.find((q) => q.name === 'sex');
+        const opt = q?.type === 'radio' && q.options?.find((o) => o.value === raw);
         value = opt && typeof opt === 'object' && 'label' in opt ? opt.label : '';
       } else {
-        // everything else in personalInfo is numeric or boolean,
-        // but we only have 'sex' as radio here, so treat false/true as number if you add more.
-        value = raw === '1' ? '1' : '0';
+        // Fallback, shouldn't happen
+        value = raw;
       }
     }
 
@@ -75,6 +93,7 @@ export default function PersonalInfoForm() {
         {personalInfoQuestions.map((q) => {
           const current = personalInfo[q.name as keyof typeof personalInfo];
 
+          // numeric inputs
           if (q.type === 'number') {
             return (
               <div key={q.name} className="flex flex-col items-center">
@@ -102,17 +121,13 @@ export default function PersonalInfoForm() {
             );
           }
 
+          // radio (sex)
           return (
             <fieldset key={q.name} className="flex flex-col items-center">
               <legend className="mb-3 font-medium text-gray-700 text-center">{q.question}</legend>
               <div className="flex gap-8">
                 {q.options.map((opt) => {
-                  // for sex, current is a string label; compare to that
-                  const isSelected =
-                    q.name === 'sex'
-                      ? current === opt.label
-                      : Boolean(current) === (opt.value === '1');
-
+                  const isSelected = q.name === 'sex' ? current === opt.label : false; // no other radios here
                   return (
                     <label
                       key={opt.value}
