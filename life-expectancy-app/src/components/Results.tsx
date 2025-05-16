@@ -58,11 +58,16 @@
 // filter applicable tips
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Tips from './Tips';
+import { useLottie } from '@/context/LottieContext';
 
 export default function Results() {
-  // (replace with your real model output)
+  const { setAnimationKey } = useLottie();
+
+  useEffect(() => {
+    setAnimationKey('protection');
+  }, []);
   const resultXgboost = 70;
 
   return (

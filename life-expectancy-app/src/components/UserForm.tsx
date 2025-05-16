@@ -35,7 +35,7 @@ export default function UserForm() {
 
   // Swap lottie based on step
   useEffect(() => {
-    const keys = ['welcome', 'dance', 'welcome', 'dance'] as const;
+    const keys = ['writing', 'habits', 'search', 'vaccinate'] as const;
     setAnimationKey(keys[step]);
   }, [step, setAnimationKey]);
 

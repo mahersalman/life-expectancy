@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLottie } from '@/context/LottieContext';
 
 import ReviewCard from './ReviewCard';
 
@@ -15,6 +16,7 @@ const steps = [
 ];
 
 export default function Review() {
+  const { setAnimationKey } = useLottie();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(0); // +1: next, -1: prev
@@ -36,6 +38,11 @@ export default function Review() {
   const handleEdit = () => {
     navigate(`/form?step=${step}`);
   };
+
+  // Swap lottie based on step
+  useEffect(() => {
+    setAnimationKey('review');
+  }, []);
 
   return (
     <div className="flex flex-col items-center space-y-6 w-full px-4 md:px-0">
