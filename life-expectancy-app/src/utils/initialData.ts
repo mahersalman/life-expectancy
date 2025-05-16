@@ -12,10 +12,10 @@ export const initialPersonalInfo: PersonalInfo = {
   age: 0,
   height: 0,
   weight: 0,
+  sex: 'Male',
 };
 
 export const initialLifestyle: Lifestyle = {
-  sex: false, // default to Male
   smokerStatus: 0 as SmokingStatus,
   eCigaretteUsage: 0 as ECigaretteUsage,
   physicalActivities: false,
