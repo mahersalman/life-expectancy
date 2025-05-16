@@ -53,7 +53,7 @@ export default function MedicalHistoryForm() {
         <table className="w-full table-auto border-separate border-spacing-y-2">
           <tbody>
             {radios.map((q) => {
-              const current = (medicalHistory as any)[q.name] as boolean;
+              const current = medicalHistory[q.name as keyof typeof medicalHistory] as boolean;
               return (
                 <tr key={q.name} className="bg-white rounded-lg shadow-sm">
                   <td className="p-4 text-gray-800 w-3/4 align-top">

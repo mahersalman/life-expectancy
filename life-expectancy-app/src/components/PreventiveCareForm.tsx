@@ -54,7 +54,7 @@ export default function PreventiveCareForm() {
             {preventiveCareQuestions
               .filter((q) => q.type === 'radio')
               .map((q) => {
-                const current = (preventiveCare as any)[q.name] as boolean;
+                const current = (preventiveCare as never)[q.name] as boolean;
                 return (
                   <tr key={q.name} className="bg-white rounded-lg shadow-sm">
                     {/* Question */}

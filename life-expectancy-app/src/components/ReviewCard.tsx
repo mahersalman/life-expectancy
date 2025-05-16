@@ -21,7 +21,7 @@ export default function ReviewCard({
   onEdit,
 }: Props) {
   const { formData } = useFormContext();
-  const answers = (formData as any)[categoryKey];
+  const answers = formData[categoryKey] as unknown as Record<string, string | number | undefined>;
 
   const formatAnswer = (q: Question) => {
     const raw = answers[q.name];
