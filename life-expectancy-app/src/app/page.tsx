@@ -1,4 +1,5 @@
 'use client';
+
 import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,6 +10,7 @@ import HomePage from '@components/HomePage';
 import UserForm from '@components/UserForm';
 import Review from '@components/Review';
 import Results from '@components/Results';
+import InfoPanel from '@/components/InfoPanel';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ export default function Main() {
         background: 'linear-gradient(135deg, #E8F0FE 0%, #E0F7FA 100%)',
       }}
     >
-      {/* Title */}
+      {/* App title */}
       <motion.h1
         onClick={() => navigate('/')}
         initial={{ y: -20, opacity: 0 }}
@@ -32,7 +34,7 @@ export default function Main() {
         Life Expectancy Calculator
       </motion.h1>
 
-      {/* Mascot */}
+      {/* Animated mascot */}
       <motion.div
         initial={{ x: 300, y: -300, opacity: 0, scale: 0.6 }}
         animate={{ x: -20, y: 20, opacity: 1, scale: 1 }}
@@ -48,7 +50,7 @@ export default function Main() {
         />
       </motion.div>
 
-      {/* Card container centering its children */}
+      {/* Clipped card container */}
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -69,6 +71,9 @@ export default function Main() {
           <Route path="/result" element={<Results />} />
         </Routes>
       </motion.div>
+
+      {/* Persistent info panel trigger */}
+      <InfoPanel />
     </div>
   );
 }
