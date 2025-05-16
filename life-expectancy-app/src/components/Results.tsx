@@ -56,25 +56,49 @@
 // }, [data]);
 
 // filter applicable tips
-
 'use client';
 
 import React from 'react';
-import { useFormContext } from '@/context/FormContext';
+import Tips from './Tips';
 
 export default function Results() {
-  const { formData } = useFormContext();
+  // (replace with your real model output)
+  const resultXgboost = 70;
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center p-8"
-      style={{ backgroundImage: `url('/path-to-background.jpg')` }}
+      className="
+        flex items-center justify-center
+        p-6 bg-cover bg-center
+      "
     >
-      <div className="bg-white/80 backdrop-blur-md rounded-xl p-6 w-full max-w-3xl overflow-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">Submitted Data</h1>
-        <pre className="text-sm font-mono text-gray-900 whitespace-pre-wrap">
-          {JSON.stringify(formData, null, 2)}
-        </pre>
+      <div
+        className="
+          w-full max-w-xl
+          bg-white/90 backdrop-blur-md rounded-2xl shadow-lg
+          p-6 space-y-6
+        "
+      >
+        {/* Title */}
+        <h1 className="text-3xl md:text-4xl font-extrabold text-blue-700 text-center">
+          Your Estimated Life Expectancy
+        </h1>
+
+        {/* Prediction */}
+        <div className="text-center">
+          <span className="text-5xl md:text-6xl font-extrabold text-green-600">
+            {resultXgboost}
+          </span>
+          <span className="ml-2 text-lg md:text-xl text-gray-700">years</span>
+        </div>
+
+        <hr className="border-gray-200" />
+
+        {/* Tips header */}
+        <h2 className="text-lg font-semibold text-gray-800">Personalized Health Tips</h2>
+
+        {/* Tips grid */}
+        <Tips />
       </div>
     </div>
   );
