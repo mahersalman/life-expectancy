@@ -1,4 +1,6 @@
-const SERVER_URL = 'http://localhost:5005/predict';
+//const SERVER_URL = 'http://localhost:5005/predict';
+const SERVER_URL = 'https://life-expectancy-fr5x.onrender.com/predict';
+
 import { FormData } from '@/app/type';
 
 export async function fetchResult(formData: FormData): Promise<number> {
