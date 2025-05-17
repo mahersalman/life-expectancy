@@ -20,14 +20,6 @@ export type Question =
 // 1. Personal Information
 export const personalInfoQuestions: Question[] = [
   {
-    name: 'age',
-    label: 'Age',
-    question: 'How old are you?',
-    type: 'number',
-    min: 0,
-    max: 120,
-  },
-  {
     name: 'sex',
     label: 'Sex',
     question: 'What is your sex?',

@@ -9,7 +9,6 @@ import {
 } from '@/app/type';
 
 export const initialPersonalInfo: PersonalInfo = {
-  age: 0,
   height: 0,
   weight: 0,
   sex: 'Male',

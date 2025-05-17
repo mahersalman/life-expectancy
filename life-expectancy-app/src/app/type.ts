@@ -2,7 +2,6 @@ export type SmokingStatus = 0 | 1 | 2 | 3;
 export type ECigaretteUsage = 0 | 1 | 2 | 3;
 
 export interface PersonalInfo {
-  age: number;
   height: number;
   weight: number;
   sex: string;
