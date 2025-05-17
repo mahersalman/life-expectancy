@@ -1,7 +1,14 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      {
+        source: '/api/predict',
+        destination: 'https://life-expectancy-fr5x.onrender.com/predict',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
