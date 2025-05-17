@@ -1,3 +1,5 @@
+// src/utils/tips.ts
+
 import { FormData, PersonalInfo, Lifestyle, MedicalHistory, PreventiveCare } from '@/app/type';
 
 export interface TipCondition<T> {
@@ -14,6 +16,7 @@ type AllFieldKeys =
 
 export const tips: Record<AllFieldKeys, TipCondition<never>[]> = {
   // PersonalInfo
+  age: [],
   height: [],
   weight: [],
   bmi: [
