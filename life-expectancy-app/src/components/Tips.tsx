@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useFormContext } from '@/context/FormContext';
-import { tips, TipCondition } from '@/utils/tips';
+import { tips, TipCondition } from '@/utils/Tips';
 
 export default function Tips() {
   const { formData } = useFormContext();

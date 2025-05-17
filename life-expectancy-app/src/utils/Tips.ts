@@ -16,7 +16,6 @@ type AllFieldKeys =
 
 export const tips: Record<AllFieldKeys, TipCondition<never>[]> = {
   // PersonalInfo
-  age: [],
   height: [],
   weight: [],
   bmi: [
