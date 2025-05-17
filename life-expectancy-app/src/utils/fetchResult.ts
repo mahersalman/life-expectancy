@@ -1,5 +1,5 @@
 //const SERVER_URL = 'http://localhost:5005/predict';
-const SERVER_URL = 'https://life-expectancy-fr5x.onrender.com/predict';
+const SERVER_URL = '/api/predict';
 
 import { FormData } from '@/app/type';
 
