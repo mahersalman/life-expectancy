@@ -6,8 +6,10 @@ import os
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, origins=["https://life-expectancy-pi.vercel.app"])
-
+CORS(app, origins=[
+    "https://life-expectancy-pi.vercel.app",
+    "http://localhost:3000"
+])
 # Load the scaler and model once at startup
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "xgb_life_expectancy_model.pkl")
 SCALER_PATH = os.path.join(os.path.dirname(__file__), "xgb_scaler.pkl")
