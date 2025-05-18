@@ -1,116 +1,33 @@
-to install requiremtnt in \models : pip install -r requirements.txt
-source .venv/bin/activate
-`
+# Life Expectancy Calculator
 
-1. Personal Information
-   1. Name
-      • Question: What is your full name?
-      • Input type: Text
-   2. Age
-      • Question: How old are you?
-      • Input type: Number (years)
-   3. Sex (0-Male | 1-Female)
-      • Question: What is your sex?
-      • Options: 0 – Male, 1 – Female
-   4. Height
-      • Question: What is your height?
-      • Input type: Number (centimeters or inches, specify units)
-   5. Weight
-      • Question: What is your weight?
-      • Input type: Number (kilograms or pounds, specify units)
+A web application that estimates personalized life expectancy based on personal information, lifestyle habits, medical history, and preventive care data, powered by an XGBoost machine learning model.
 
-⸻
+## 🚀 Features
 
-2. Lifestyle
+- **Interactive Multi-Step Form**: Four sections (Personal Info, Lifestyle, Medical History, Preventive Care) with animated Lottie characters and smooth transitions.
+- **Machine Learning**: Uses a pre-trained XGBoost model to compute life expectancy.
+- **Synthetic Data Generation**: Includes a Python script to build a realistic, privacy-preserving synthetic dataset derived from public health surveys, ensuring robust model training.
+- **Realistic Synthetic Data**: Model trained on a synthetically generated, yet realistic dataset derived from public health surveys.
+- **Dynamic Tips**: Contextual health tips based on your inputs.
+- **Review & Edit**: Step-by-step review carousel with the ability to jump back and modify answers.
 
-   1. Smoking Status (0-Never | 1-Former | 2-Some days | 3-Every day)
-      • Question: What is your smoking status?
-      • Options:
-      • 0 – Never smoked
-      • 1 – Used to smoke, but quit
-      • 2 – Smoke on some days
-      • 3 – Smoke every day
+## 🛠️ Tech Stack
 
-   2. E-Cigarette Usage (0-Never | 1-Former | 2-Some days | 3-Every day)
-      • Question: What is your e-cigarette usage status?
-      • Options:
-      • 0 – Never used
-      • 1 – Used to use, but quit
-      • 2 – Use on some days
-      • 3 – Use every day
-   3. Physical Activity (0-No | 1-Yes)
-      • Question: Did you do any physical activity or exercise in the past month?
-      • Options: 0 – No, 1 – Yes
-   4. Sleep Hours
-      • Question: On average, how many hours of sleep do you get in a 24-hour period?
-      • Input type: Number (1–24)
-   5. Alcohol Consumption (0-No | 1-Yes)
-      • Question: Have you had at least one drink of alcohol in the past 30 days?
-      • Options: 0 – No, 1 – Yes
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS, Framer Motion, Lottie animations
+- **Backend**: Flask API serving the XGBoost model
+- **Machine Learning**: XGBoost
+- **Synthetic Data Script**: Python (`Data/GenerateData.ipynb`) for creating privacy‑preserving synthetic samples
+- **Package Management**: npm
+- **Deployment**:
 
-⸻
+  - Frontend on **Vercel**
+  - Backend on **AWS EC2**
 
-3. Medical History
-   1. Had Heart Attack (0-No | 1-Yes)
-      • Question: Have you ever had a heart attack?
-      • Options: 0 – No, 1 – Yes
-   2. Had Angina / Coronary Heart Disease (0-No | 1-Yes)
-      • Question: Have you ever been diagnosed with angina or coronary heart disease?
-      • Options: 0 – No, 1 – Yes
-   3. Had Stroke (0-No | 1-Yes)
-      • Question: Have you ever had a stroke?
-      • Options: 0 – No, 1 – Yes
-   4. Had Asthma (0-No | 1-Yes)
-      • Question: Have you ever been told you have asthma?
-      • Options: 0 – No, 1 – Yes
-   5. Had COPD / Emphysema (0-No | 1-Yes)
-      • Question: Have you ever been diagnosed with COPD or emphysema?
-      • Options: 0 – No, 1 – Yes
-   6. Had Depressive Disorder (0-No | 1-Yes)
-      • Question: Have you ever been diagnosed with a depressive disorder?
-      • Options: 0 – No, 1 – Yes
-   7. Had Kidney Disease (0-No | 1-Yes)
-      • Question: Have you ever had kidney disease (excluding stones and bladder infections)?
-      • Options: 0 – No, 1 – Yes
-   8. Had Arthritis (0-No | 1-Yes)
-      • Question: Have you ever been diagnosed with arthritis?
-      • Options: 0 – No, 1 – Yes
-   9. Had Diabetes (0-No | 1-Yes)
-      • Question: Have you ever been diagnosed with diabetes?
-      • Options: 0 – No, 1 – Yes
-   10. Deaf or Hard of Hearing (0-No | 1-Yes)
-       • Question: Are you deaf or do you have serious difficulty hearing?
-       • Options: 0 – No, 1 – Yes
-   11. Blind or Vision Difficulty (0-No | 1-Yes)
-       • Question: Are you blind or do you have serious difficulty seeing even with glasses?
-       • Options: 0 – No, 1 – Yes
-   12. Difficulty Concentrating (0-No | 1-Yes)
-       • Question: Do you have serious difficulty concentrating, remembering, or making decisions?
-       • Options: 0 – No, 1 – Yes
-   13. Difficulty Walking / Climbing Stairs (0-No | 1-Yes)
-       • Question: Do you have serious difficulty walking or climbing stairs?
-       • Options: 0 – No, 1 – Yes
-   14. Difficulty Dressing / Bathing (0-No | 1-Yes)
-       • Question: Do you have difficulty dressing or bathing yourself?
-       • Options: 0 – No, 1 – Yes
-   15. Difficulty Doing Errands Alone (0-No | 1-Yes)
-       • Question: Do you have difficulty doing errands alone (e.g., shopping, visiting a doctor) due to physical, mental, or emotional conditions?
-       • Options: 0 – No, 1 – Yes
+## 🤝 Contributing
 
-⸻
+Contributions are welcome!
 
-4. Preventive Care
-   1. Flu Vaccine in the Past 12 Months (0-No | 1-Yes)
-      • Question: Have you had a flu vaccine in the past 12 months?
-      • Options: 0 – No, 1 – Yes
-   2. Pneumonia Vaccine Ever (0-No | 1-Yes)
-      • Question: Have you ever had a pneumonia vaccine?
-      • Options: 0 – No, 1 – Yes
-   3. Tetanus (Tdap) Vaccine in the Past 10 Years (0-No | 1-Yes)
-      • Question: Have you had a tetanus (Tdap) vaccine in the past 10 years?
-      • Options: 0 – No, 1 – Yes
-   4. High-Risk Group Last Year (0-No | 1-Yes)
-      • Question: Were you considered high-risk for COVID-19 or similar diseases last year?
-      • Options: 0 – No, 1 – Yes
+## ✉️ Contact
 
-⸻
+- Maher Salman — [linkedin.com/in/maher-salman](https://www.linkedin.com/in/maher-salman/)
+- Adan Butto — [linkedin.com/in/adan-butto-659288232](https://www.linkedin.com/in/adan-butto-659288232/)
