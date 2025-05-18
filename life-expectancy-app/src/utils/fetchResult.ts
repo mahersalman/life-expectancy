@@ -1,5 +1,5 @@
 //const SERVER_URL = 'http://localhost:5000/predict';
-const SERVER_URL = 'http://13.51.206.157:5000/predict';
+const SERVER_URL = 'http://13.51.206.157/predict';
 
 import { FormData } from '@/app/type';
 
