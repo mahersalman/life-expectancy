@@ -44,17 +44,12 @@ export const tips: Record<AllFieldKeys, TipCondition<never>[]> = {
     },
   ],
   eCigaretteUsage: [
-    { check: (v: number) => v === 0, message: 'Never used e-cigarettes: minimal risk.' },
     {
       check: (v: number) => v > 0,
       message: 'E-cigarette use: potential respiratory risks under study.',
     },
   ],
   physicalActivities: [
-    {
-      check: (v: boolean) => v === true,
-      message: 'Regular physical activity: adds ~0.4–6.9 years to life expectancy.',
-    },
     {
       check: (v: boolean) => v === false,
       message: 'No physical activity: missing potential lifespan gain of up to ~6.9 years.',
@@ -126,19 +121,19 @@ export const tips: Record<AllFieldKeys, TipCondition<never>[]> = {
   // PreventiveCare
   fluVaxLast12: [
     {
-      check: (v: boolean) => v === true,
+      check: (v: boolean) => v === false,
       message: 'Flu vaccine last 12 months: associated with up to +10 years.',
     },
   ],
   pneumoVaxEver: [
     {
-      check: (v: boolean) => v === true,
+      check: (v: boolean) => v === false,
       message: 'Pneumococcal vaccine ever: associated with up to +10 years.',
     },
   ],
   tetanusLast10Tdap: [
     {
-      check: (v: boolean) => v === true,
+      check: (v: boolean) => v === false,
       message: 'Tdap vaccine past 10 years: protective effect on life expectancy.',
     },
   ],

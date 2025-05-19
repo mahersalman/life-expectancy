@@ -8,6 +8,7 @@ import doctorWriting from '@/Lottie/doctorWriting.json';
 import robotHello from '@/Lottie/robotHello.json';
 import Review from '@/Lottie/review.json';
 import Protection from '@/Lottie/Protection.json';
+import Plus from '@/Lottie/plus.json';
 export type AnimationKey =
   | 'welcome'
   | 'writing'
@@ -15,7 +16,8 @@ export type AnimationKey =
   | 'search'
   | 'habits'
   | 'review'
-  | 'protection';
+  | 'protection'
+  | 'plus';
 
 const animationMap: Record<AnimationKey, object> = {
   welcome: robotHello,
@@ -25,6 +27,7 @@ const animationMap: Record<AnimationKey, object> = {
   writing: doctorWriting,
   review: Review,
   protection: Protection,
+  plus: Plus,
 };
 
 interface LottieContextValue {
