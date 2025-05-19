@@ -18,7 +18,7 @@ export default function MedicalHistoryForm() {
     }));
   };
 
-  // only keep radio questions
+  // only radio questions
   const radios = medicalHistoryQuestions.filter((q) => q.type === 'radio');
 
   return (
@@ -29,7 +29,7 @@ export default function MedicalHistoryForm() {
         aria-hidden
       />
 
-      {/* Step header */}
+      {/* Header */}
       <motion.div
         className="mb-6 text-center"
         initial={{ opacity: 0, y: -10 }}
@@ -43,53 +43,55 @@ export default function MedicalHistoryForm() {
         <p className="mt-2 text-gray-600">Any diagnoses or conditions we should know about?</p>
       </motion.div>
 
-      {/* Scrollable question window (8 rows high) */}
+      {/* Scrollable list */}
       <motion.div
-        className="overflow-y-auto max-h-[40rem] pr-4"
+        className="overflow-y-auto max-h-[40rem] space-y-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <table className="w-full table-auto border-separate border-spacing-y-2">
-          <tbody>
-            {radios.map((q) => {
-              const current = medicalHistory[q.name as keyof typeof medicalHistory] as boolean;
-              return (
-                <tr key={q.name} className="bg-white rounded-lg shadow-sm">
-                  <td className="p-4 text-gray-800 w-3/4 align-top">
-                    <span className="font-medium">{q.question}</span>
-                  </td>
-                  <td className="p-4 w-1/4 align-top">
-                    <div className="flex justify-around">
-                      {q.options.map((opt) => {
-                        const isSelected = current === (opt.value === '1');
-                        return (
-                          <label
-                            key={opt.value}
-                            className={`
-                              flex items-center space-x-2 cursor-pointer
-                              ${isSelected ? 'text-red-700' : 'text-gray-600 hover:text-red-700'}
-                            `}
-                          >
-                            <input
-                              type="radio"
-                              name={q.name}
-                              value={opt.value}
-                              checked={isSelected}
-                              onChange={(e) => handleChange(q.name, e.target.value)}
-                              className="form-radio h-5 w-5"
-                            />
-                            <span className="text-sm">{opt.label}</span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {radios.map((q) => {
+          const current = medicalHistory[q.name as keyof typeof medicalHistory] as boolean;
+          return (
+            <div
+              key={q.name}
+              className="bg-white rounded-lg shadow-sm p-4 flex flex-col sm:flex-row sm:items-center"
+            >
+              {/* Question */}
+              <div className="text-gray-800 font-medium sm:w-3/4">{q.question}</div>
+
+              {/* Toggle pills */}
+              <div className="flex space-x-4 mt-3 sm:mt-0 sm:w-1/4 justify-center">
+                {q.options.map((opt) => {
+                  const isSelected = current === (opt.value === '1');
+                  return (
+                    <label
+                      key={opt.value}
+                      className={`
+                        px-4 py-2 rounded-full cursor-pointer text-sm font-semibold transition
+                        ${
+                          isSelected
+                            ? 'bg-red-600 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }
+                      `}
+                    >
+                      <input
+                        type="radio"
+                        name={q.name}
+                        value={opt.value}
+                        checked={isSelected}
+                        onChange={(e) => handleChange(q.name, e.target.value)}
+                        className="hidden"
+                      />
+                      {opt.label}
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
       </motion.div>
     </div>
   );

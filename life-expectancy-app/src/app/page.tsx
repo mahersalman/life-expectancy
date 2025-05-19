@@ -19,10 +19,13 @@ export default function Main() {
 
   return (
     <div
-      className="relative min-h-screen flex flex-col items-center pt-20 overflow-visible"
-      style={{
-        background: 'linear-gradient(135deg, #E8F0FE 0%, #E0F7FA 100%)',
-      }}
+      className="
+        relative flex flex-col items-center
+        pt-16 sm:pt-20 md:pt-24
+        px-4 sm:px-6 lg:px-0
+        min-h-screen
+        bg-gradient-to-br from-blue-50 to-cyan-50
+      "
     >
       {/* App title */}
       <motion.h1
@@ -30,18 +33,29 @@ export default function Main() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-8 text-center cursor-pointer whitespace-nowrap"
+        className="
+          text-3xl sm:text-4xl md:text-5xl
+          font-extrabold text-blue-700
+          mb-8
+          text-center cursor-pointer whitespace-nowrap
+        "
       >
         Life Expectancy Calculator
       </motion.h1>
 
-      {/* Animated mascot */}
+      {/* Animated mascot (hidden on small) */}
       <motion.div
         initial={{ x: 300, y: -300, opacity: 0, scale: 0.6 }}
         animate={{ x: -20, y: 20, opacity: 1, scale: 1 }}
         transition={{ type: 'spring', stiffness: 55 }}
-        className="absolute top-0 right-0 z-10"
-        style={{ width: 300, height: 300 }}
+        className="
+          hidden md:block
+          absolute top-0 right-0 z-10
+          w-40 h-40
+          sm:w-48 sm:h-48
+          md:w-64 md:h-64
+          lg:w-72 lg:h-72
+        "
       >
         <Lottie
           animationData={animationData}
@@ -56,13 +70,21 @@ export default function Main() {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-3xl mx-auto
-                   bg-white/80 backdrop-blur-md rounded-2xl shadow-xl
-                   overflow-visible p-10 md:p-16
-                   flex flex-col justify-center items-center"
+        className="
+          relative z-10
+          w-full
+          max-w-xl sm:max-w-2xl md:max-w-3xl
+          mx-auto
+          bg-white/80 backdrop-blur-md
+          rounded-[2rem] shadow-xl
+          overflow-visible
+          py-8 sm:py-10 md:py-12
+          px-6 sm:px-8 md:px-16
+          flex flex-col justify-center items-center
+          min-h-[60vh] sm:min-h-[65vh] md:min-h-[70vh]
+        "
         style={{
           clipPath: 'polygon(0% 5%, 100% 0%, 95% 100%, 0% 95%)',
-          minHeight: '70vh',
         }}
       >
         <Routes>

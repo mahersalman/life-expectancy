@@ -30,21 +30,13 @@ export default function PersonalInfoForm() {
 
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {
     let value: number | string;
-
     if (type === 'number') {
       value = Number(raw) || 0;
     } else {
-      // Only 'sex' is radio here → store the label
-      if (name === 'sex') {
-        const q = personalInfoQuestions.find((q) => q.name === 'sex');
-        const opt = q?.type === 'radio' && q.options?.find((o) => o.value === raw);
-        value = opt && typeof opt === 'object' && 'label' in opt ? opt.label : '';
-      } else {
-        // Fallback, shouldn't happen
-        value = raw;
-      }
+      const q = personalInfoQuestions.find((q) => q.name === 'sex');
+      const opt = q?.type === 'radio' && q.options?.find((o) => o.value === raw);
+      value = opt && 'label' in opt ? opt.label : '';
     }
-
     setFormData((prev) => ({
       ...prev,
       personalInfo: {
@@ -57,34 +49,43 @@ export default function PersonalInfoForm() {
   return (
     <div
       className="
-        relative p-12
+        relative
         bg-white/90 backdrop-blur-md rounded-2xl shadow-lg
-        w-full max-w-3xl mx-auto
+        w-full max-w-md sm:max-w-lg lg:max-w-2xl
+        mx-auto
+        p-6 sm:p-8 md:p-10
       "
     >
-      {/* Decorative blob */}
+      {/* Decorative blob (smaller or hidden on phone) */}
       <div
-        className="absolute -top-12 -left-12 w-40 h-40 bg-purple-100 rounded-full opacity-50"
+        className="
+          hidden sm:block
+          absolute -top-10 -left-10
+          w-24 h-24 sm:w-32 sm:h-32
+          bg-purple-100 rounded-full opacity-50
+        "
         aria-hidden
       />
 
       {/* Step header */}
       <motion.div
+        className="mb-8 text-center px-2"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="mb-10 text-center"
       >
-        <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+        <span className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">
           Step 1 of 4
         </span>
-        <h3 className="mt-2 text-3xl font-bold text-gray-800">Personal Information</h3>
-        <p className="mt-3 text-gray-600">Let’s get to know you—just a few quick details.</p>
+        <h3 className="mt-1 text-2xl sm:text-3xl font-bold text-gray-800">Personal Information</h3>
+        <p className="mt-1 text-gray-600 text-sm sm:text-base">
+          Let’s get to know you—just a few quick details.
+        </p>
       </motion.div>
 
       {/* Form */}
       <motion.form
-        className="space-y-8"
+        className="space-y-6 sm:space-y-8 px-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -95,10 +96,10 @@ export default function PersonalInfoForm() {
           // numeric inputs
           if (q.type === 'number') {
             return (
-              <div key={q.name} className="flex flex-col items-center">
+              <div key={q.name} className="flex flex-col items-stretch sm:items-center">
                 <label
                   htmlFor={q.name}
-                  className="mb-3 text-lg font-medium text-gray-700 text-center"
+                  className="mb-2 text-base sm:text-lg font-medium text-gray-700 text-center"
                 >
                   {q.question}
                 </label>
@@ -111,9 +112,10 @@ export default function PersonalInfoForm() {
                   value={current as number}
                   onChange={(e) => handleChange(q.name, e.target.value, 'number')}
                   className="
-                    w-72 h-14 text-center text-2xl p-3
+                    w-full sm:w-72 h-12 sm:h-14
+                    text-center text-lg sm:text-2xl p-2 sm:p-3
                     border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-purple-300 shadow-sm
+                    focus:outline-none focus:ring-2 focus:ring-purple-300
                   "
                 />
               </div>
@@ -122,16 +124,21 @@ export default function PersonalInfoForm() {
 
           // radio (sex)
           return (
-            <fieldset key={q.name} className="flex flex-col items-center">
-              <legend className="mb-3 font-medium text-gray-700 text-center">{q.question}</legend>
-              <div className="flex gap-8">
+            <fieldset key={q.name} className="flex flex-col items-center px-2">
+              <legend className="mb-2 text-base sm:text-lg font-medium text-gray-700 text-center">
+                {q.question}
+              </legend>
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
                 {q.options.map((opt) => {
-                  const isSelected = q.name === 'sex' ? current === opt.label : false; // no other radios here
+                  const isSelected = current === opt.label;
                   return (
                     <label
                       key={opt.value}
                       className={`
-                        px-10 py-4 rounded-lg cursor-pointer text-center text-xl font-semibold
+                        flex-1
+                        px-4 py-2 sm:px-8 sm:py-4
+                        text-center text-base sm:text-xl font-semibold
+                        rounded-lg cursor-pointer
                         transition
                         ${
                           isSelected
