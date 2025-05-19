@@ -1,4 +1,3 @@
-// src/components/PreventiveCareForm.tsx
 'use client';
 
 import React from 'react';
@@ -26,7 +25,7 @@ export default function PreventiveCareForm() {
         aria-hidden
       />
 
-      {/* Step header */}
+      {/* Header */}
       <motion.div
         className="mb-6 text-center"
         initial={{ opacity: 0, y: -10 }}
@@ -42,61 +41,59 @@ export default function PreventiveCareForm() {
         </p>
       </motion.div>
 
-      {/* Questions table */}
+      {/* Questions list */}
       <motion.div
-        className="overflow-x-auto"
+        className="space-y-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <table className="w-full table-auto border-separate border-spacing-y-4">
-          <tbody>
-            {preventiveCareQuestions
-              .filter((q) => q.type === 'radio')
-              .map((q) => {
-                const current = preventiveCare[q.name as keyof typeof preventiveCare] as boolean;
-                return (
-                  <tr key={q.name} className="bg-white rounded-xl shadow-sm">
-                    {/* Question */}
-                    <td className="p-4 align-top text-gray-800 w-3/4">
-                      <span className="font-medium">{q.question}</span>
-                    </td>
-                    {/* No / Yes pills */}
-                    <td className="p-4 align-top w-1/4">
-                      <div className="flex justify-center space-x-2">
-                        {q.options.map((opt) => {
-                          const isSelected = current === (opt.value === '1');
-                          return (
-                            <label
-                              key={opt.value}
-                              className={`
-                                px-3 py-1.5 rounded-full cursor-pointer text-sm font-medium transition
-                                ${
-                                  isSelected
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }
-                              `}
-                            >
-                              <input
-                                type="radio"
-                                name={q.name}
-                                value={opt.value}
-                                checked={isSelected}
-                                onChange={(e) => handleChange(q.name, e.target.value)}
-                                className="hidden"
-                              />
-                              {opt.label}
-                            </label>
-                          );
-                        })}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+        {preventiveCareQuestions
+          .filter((q) => q.type === 'radio')
+          .map((q) => {
+            const current = preventiveCare[q.name as keyof typeof preventiveCare] as boolean;
+            return (
+              <div
+                key={q.name}
+                className="bg-white rounded-xl shadow-sm p-4 flex flex-col sm:flex-row items-start sm:items-center"
+              >
+                {/* Question text */}
+                <div className="w-full sm:w-3/4">
+                  <span className="font-medium text-gray-800">{q.question}</span>
+                </div>
+
+                {/* Buttons */}
+                <div className="w-full sm:w-1/4 mt-2 sm:mt-0 flex justify-center space-x-2">
+                  {q.options.map((opt) => {
+                    const isSelected = current === (opt.value === '1');
+                    return (
+                      <label
+                        key={opt.value}
+                        className={`
+                          px-3 py-1.5 rounded-full cursor-pointer text-sm font-medium transition
+                          ${
+                            isSelected
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }
+                        `}
+                      >
+                        <input
+                          type="radio"
+                          name={q.name}
+                          value={opt.value}
+                          checked={isSelected}
+                          onChange={(e) => handleChange(q.name, e.target.value)}
+                          className="hidden"
+                        />
+                        {opt.label}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
       </motion.div>
     </div>
   );
