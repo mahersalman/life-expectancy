@@ -26,7 +26,6 @@ export default function PersonalInfoForm() {
         }));
       }
     }
-    console.log('bmi = ', formData.personalInfo.bmi);
   }, [height, weight, personalInfo.bmi, setFormData]);
 
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {

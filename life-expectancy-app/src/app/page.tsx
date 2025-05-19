@@ -11,6 +11,7 @@ import UserForm from '@components/UserForm';
 import Review from '@components/Review';
 import Results from '@components/Results';
 import InfoPanel from '@/components/InfoPanel';
+import Simulator from '@/components/Simulator';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ export default function Main() {
           <Route path="/form" element={<UserForm />} />
           <Route path="/review" element={<Review />} />
           <Route path="/result" element={<Results />} />
+          <Route path="/simulator" element={<Simulator />} />
         </Routes>
       </motion.div>
 
