@@ -55,15 +55,16 @@ export default function PreventiveCareForm() {
             return (
               <div
                 key={q.name}
-                className="bg-white rounded-xl shadow-sm p-4 flex flex-col sm:flex-row items-start sm:items-center"
+                className="bg-white rounded-lg shadow-md p-4 flex flex-col sm:flex-row sm:items-center
+                           transition-shadow hover:shadow-lg"
               >
                 {/* Question text */}
                 <div className="w-full sm:w-3/4">
                   <span className="font-medium text-gray-800">{q.question}</span>
                 </div>
 
-                {/* Buttons */}
-                <div className="w-full sm:w-1/4 mt-2 sm:mt-0 flex justify-center space-x-2">
+                {/* Yes/No pills */}
+                <div className="w-full sm:w-1/4 mt-3 sm:mt-0 flex justify-center space-x-2">
                   {q.options.map((opt) => {
                     const isSelected = current === (opt.value === '1');
                     return (
