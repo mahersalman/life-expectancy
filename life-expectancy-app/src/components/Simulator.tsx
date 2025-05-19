@@ -16,33 +16,26 @@ export default function Simulator() {
   const navigate = useNavigate();
   const { setAnimationKey } = useLottie();
 
-  // Local copy of all inputs
   const [simData, setSimData] = useState(formData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<number | null>(null);
 
-  // sync animation
   useEffect(() => {
     setAnimationKey('plus');
   }, [setAnimationKey]);
 
-  // initialize simData from context on mount
   useEffect(() => {
     setSimData(formData);
   }, [formData]);
 
-  // fire prediction call
   const updatePrediction = async () => {
-    console.log('simData: ', simData);
-
     setLoading(true);
     setError(null);
     try {
       const r = await fetchResult(simData);
       setResult(r);
     } catch (err: unknown) {
-      console.error(err);
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
@@ -50,16 +43,16 @@ export default function Simulator() {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center p-4 sm:p-6 md:p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="
-          relative max-w-md w-full mt-12
+          relative w-full max-w-md sm:max-w-lg
           bg-white bg-opacity-90 backdrop-blur-xl
-          rounded-2xl shadow-2xl p-8
-          flex flex-col space-y-8
+          rounded-2xl shadow-2xl p-6 sm:p-8
+          flex flex-col space-y-6
         "
       >
         {/* Header */}
@@ -68,7 +61,7 @@ export default function Simulator() {
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 200 }}
           className="
-            text-3xl font-bold text-center
+            text-2xl sm:text-3xl font-bold text-center
             bg-gradient-to-r from-blue-500 to-purple-600
             bg-clip-text text-transparent
           "
@@ -76,9 +69,8 @@ export default function Simulator() {
           Life Expectancy Simulator
         </motion.h2>
 
-        {/* Controls */}
+        {/* Sliders */}
         <div className="space-y-4">
-          {/* Sleep Hours */}
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
               label="Sleep Hours"
@@ -93,8 +85,6 @@ export default function Simulator() {
               }
             />
           </motion.div>
-
-          {/* Weight */}
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
               label="Weight (kg)"
@@ -111,8 +101,6 @@ export default function Simulator() {
               }
             />
           </motion.div>
-
-          {/* Smoker Status */}
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
               label="Smoker Status"
@@ -128,8 +116,6 @@ export default function Simulator() {
               }
             />
           </motion.div>
-
-          {/* E-Cigarette Usage */}
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
               label="E-Cigarette Usage"
@@ -148,7 +134,7 @@ export default function Simulator() {
         </div>
 
         {/* Toggles */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <motion.div whileTap={{ scale: 0.95 }}>
             <ToggleWithLabel
               label="Alcohol Drinker"
@@ -175,14 +161,14 @@ export default function Simulator() {
           </motion.div>
         </div>
 
-        {/* Run Simulation */}
+        {/* Predict button */}
         <div className="text-center">
           <motion.button
             onClick={updatePrediction}
             disabled={loading}
             whileHover={{ scale: 1.05 }}
             className="
-              inline-block px-8 py-3
+              inline-block px-6 sm:px-8 py-2 sm:py-3
               bg-gradient-to-r from-green-500 to-teal-500
               text-white font-semibold
               rounded-full shadow-lg
@@ -194,31 +180,31 @@ export default function Simulator() {
           </motion.button>
         </div>
 
-        {/* Output */}
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {/* Error */}
+        {error && <p className="text-red-500 text-center text-sm sm:text-base">{error}</p>}
 
+        {/* Result */}
         {result !== null && !loading && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center mt-4"
+            className="text-center mt-4 space-y-2"
           >
-            <h3 className="text-lg font-semibold text-gray-800">Estimated Life Expecancy </h3>
-            <p className="mt-2 text-2xl font-bold text-green-600">
-              {result.toFixed(1)} <span className="text-lg text-gray-700">years</span>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+              Estimated Life Expectancy
+            </h3>
+            <p className="text-2xl sm:text-3xl font-bold text-green-600">
+              {result.toFixed(1)} <span className="text-sm sm:text-base text-gray-700">years</span>
             </p>
           </motion.div>
         )}
       </motion.div>
 
-      {/* Back to Results */}
+      {/* Back link */}
       <div className="mt-6">
         <button
           onClick={() => navigate('/result')}
-          className="
-            text-sm text-gray-600 hover:text-gray-800
-            underline transition
-          "
+          className="text-sm sm:text-base text-gray-600 hover:text-gray-800 underline transition"
         >
           ← Back to Results
         </button>

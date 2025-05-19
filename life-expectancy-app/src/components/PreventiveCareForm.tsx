@@ -22,7 +22,7 @@ export default function PreventiveCareForm() {
     <div className="relative p-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg w-full max-w-2xl mx-auto">
       {/* Blue accent circle */}
       <div
-        className="absolute -top-10 -right-10 w-32 h-32 bg-blue-100 rounded-full mix-blend-multiply opacity-50"
+        className="absolute -top-10 -right-10 w-32 h-32 bg-blue-100 rounded-full opacity-50"
         aria-hidden
       />
 
@@ -49,31 +49,32 @@ export default function PreventiveCareForm() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <table className="w-full table-auto border-separate border-spacing-y-2">
+        <table className="w-full table-auto border-separate border-spacing-y-4">
           <tbody>
             {preventiveCareQuestions
               .filter((q) => q.type === 'radio')
               .map((q) => {
-                const current = (preventiveCare as never)[q.name] as boolean;
+                const current = preventiveCare[q.name as keyof typeof preventiveCare] as boolean;
                 return (
-                  <tr key={q.name} className="bg-white rounded-lg shadow-sm">
+                  <tr key={q.name} className="bg-white rounded-xl shadow-sm">
                     {/* Question */}
                     <td className="p-4 align-top text-gray-800 w-3/4">
                       <span className="font-medium">{q.question}</span>
                     </td>
-
-                    {/* No / Yes radios */}
+                    {/* No / Yes pills */}
                     <td className="p-4 align-top w-1/4">
-                      <div className="flex justify-around">
+                      <div className="flex justify-center space-x-2">
                         {q.options.map((opt) => {
                           const isSelected = current === (opt.value === '1');
                           return (
                             <label
                               key={opt.value}
                               className={`
-                                flex items-center space-x-2 cursor-pointer
+                                px-3 py-1.5 rounded-full cursor-pointer text-sm font-medium transition
                                 ${
-                                  isSelected ? 'text-blue-700' : 'text-gray-600 hover:text-blue-700'
+                                  isSelected
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }
                               `}
                             >
@@ -83,9 +84,9 @@ export default function PreventiveCareForm() {
                                 value={opt.value}
                                 checked={isSelected}
                                 onChange={(e) => handleChange(q.name, e.target.value)}
-                                className="form-radio h-5 w-5 text-blue-600"
+                                className="hidden"
                               />
-                              <span className="text-sm">{opt.label}</span>
+                              {opt.label}
                             </label>
                           );
                         })}

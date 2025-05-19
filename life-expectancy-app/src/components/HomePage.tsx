@@ -1,4 +1,3 @@
-// src/components/HomePage.tsx
 'use client';
 
 import React, { useEffect } from 'react';
@@ -20,23 +19,23 @@ export default function HomePage() {
   const { setAnimationKey } = useLottie();
 
   useEffect(() => {
-    setAnimationKey('welcome'); // kicks off the same welcome animation
+    setAnimationKey('welcome');
   }, [setAnimationKey]);
 
   return (
     <motion.div
-      className="relative flex flex-col items-center space-y-8 px-4 md:px-0"
+      className="relative flex flex-col items-center space-y-8 px-4 sm:px-6 md:px-0"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      {/* Main welcome Lottie */}
-      <div className="w-40 h-40">
+      {/* Responsive Lottie */}
+      <div className="w-32 sm:w-40 md:w-48">
         <Lottie animationData={CareCompanion} loop autoplay />
       </div>
 
-      {/* Headline & Intro */}
-      <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center max-w-lg">
+      {/* Responsive headline */}
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 text-center max-w-lg">
         Welcome to the Life Expectancy Calculator!
       </h2>
       <p className="max-w-md text-gray-600 text-center">
@@ -44,8 +43,8 @@ export default function HomePage() {
         Care—our XGBoost model will estimate your personalized life expectancy.
       </p>
 
-      {/* Static preview of the four sections */}
-      <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+      {/* Always two columns */}
+      <div className="grid grid-cols-2 gap-4 w-full max-w-md sm:max-w-lg">
         {categories.map(({ key, title, emoji }) => (
           <div key={key} className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
             <div className="text-4xl">{emoji}</div>
@@ -54,15 +53,16 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* “Get Started” button with your original gradient style */}
+      {/* Gradient “Get Started” button */}
       <motion.button
         onClick={() => navigate('/form')}
-        className="mt-4 px-8 py-3 font-semibold rounded-full transition-shadow hover:shadow-lg"
         whileHover={{ scale: 1.05 }}
-        style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-        }}
+        className="
+          mt-4 px-6 sm:px-8 py-3 text-sm sm:text-base
+          font-semibold rounded-full
+          bg-gradient-to-br from-indigo-500 to-purple-600
+          text-white transition-shadow hover:shadow-lg
+        "
       >
         Get Started
       </motion.button>

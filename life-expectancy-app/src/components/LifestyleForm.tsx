@@ -15,11 +15,9 @@ export default function LifestyleForm() {
     if (type === 'number') {
       value = Number(raw) || 0;
     } else {
-      // enums
-      if (name === 'smokerStatus' || name === 'eCigaretteUsage') {
+      if (['smokerStatus', 'eCigaretteUsage'].includes(name)) {
         value = Number(raw);
       } else {
-        // all other radios are booleans
         value = raw === '1';
       }
     }
@@ -65,7 +63,10 @@ export default function LifestyleForm() {
       >
         {lifestyleQuestions.map((q) => {
           const current = lifestyle[q.name as keyof typeof lifestyle];
+          const isEnumGroup = ['smokerStatus', 'eCigaretteUsage'].includes(q.name);
+          const isBoolGroup = ['physicalActivities', 'alcoholDrinkers'].includes(q.name);
 
+          // Number inputs
           if (q.type === 'number') {
             return (
               <div key={q.name} className="flex flex-col items-center">
@@ -90,16 +91,32 @@ export default function LifestyleForm() {
             );
           }
 
-          const isEnumGroup = ['smokerStatus', 'eCigaretteUsage'].includes(q.name);
-          const isBoolGroup = ['physicalActivities', 'alcoholDrinkers'].includes(q.name);
-
+          // Radio groups: dropdown on mobile only for enums, boxes always for bools
           return (
             <fieldset key={q.name} className="flex flex-col items-center">
               <legend className="mb-2 font-medium text-gray-700 text-center">{q.question}</legend>
+
+              {isEnumGroup && (
+                // dropdown only on phones
+                <select
+                  className="block sm:hidden w-full max-w-xs text-center p-2 mb-4 border border-gray-300 rounded-lg"
+                  value={String(current as number)}
+                  onChange={(e) => handleChange(q.name, e.target.value, 'radio')}
+                >
+                  <option value="">Select...</option>
+                  {q.options.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              )}
+
               <div
-                className={
-                  isEnumGroup ? 'grid grid-cols-4 gap-4 w-full max-w-xl' : 'grid grid-cols-2 gap-4'
-                }
+                className={`
+                  ${isEnumGroup ? 'hidden sm:grid grid-cols-4 gap-4' : 'grid grid-cols-2 gap-4'}
+                  w-full max-w-xl
+                `}
               >
                 {q.options.map((opt) => {
                   const selected = isEnumGroup
