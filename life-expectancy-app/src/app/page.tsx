@@ -20,12 +20,12 @@ export default function Main() {
   return (
     <div
       className="
-        relative flex flex-col items-center
-        pt-16 sm:pt-20 md:pt-24
-        px-4 sm:px-6 lg:px-0
-        min-h-screen
-        bg-gradient-to-br from-blue-50 to-cyan-50
-      "
+    relative flex flex-col items-center
+    pt-8 sm:pt-12 md:pt-16
+    px-4 sm:px-6 lg:px-0
+    min-h-screen
+    bg-gradient-to-br from-blue-50 to-cyan-50
+  "
     >
       {/* App title */}
       <motion.h1
