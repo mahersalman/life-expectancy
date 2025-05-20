@@ -76,7 +76,7 @@ export default function InfoPanel() {
               </a>
             </div>
 
-            <div>
+            <div className="mb-4">
               <h3 className="font-semibold text-gray-800">Developers</h3>
               <ul className="list-none text-gray-700 space-y-2">
                 <li>
@@ -100,6 +100,21 @@ export default function InfoPanel() {
                   </a>
                 </li>
               </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-gray-800">We Value Your Feedback</h3>
+              <p className="text-gray-700 mb-2">
+                Help us improve by filling out this quick SUS survey:
+              </p>
+              <a
+                href="https://forms.gle/NZYTfYG1NNxBjqAG6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-blue-600 text-white px-4 py-2 rounded-full shadow hover:bg-blue-700 transition-colors font-medium"
+              >
+                Give Feedback
+              </a>
             </div>
           </div>
         </div>
