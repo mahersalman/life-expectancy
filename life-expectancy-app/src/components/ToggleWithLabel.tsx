@@ -2,6 +2,18 @@
 
 import React from 'react';
 
+/**
+ * ToggleWithLabel
+ *
+ * Renders a labeled toggle (checkbox) input with optional display of the original value.
+ *
+ * Props:
+ * - label: text label displayed next to the checkbox
+ * - value: current boolean state of the toggle
+ * - originalValue: (optional) previous state, shown as "Original: Yes/No"
+ * - onChange: callback invoked with the new boolean state when toggled
+ */
+
 interface ToggleWithLabelProps {
   label: string;
   value: boolean;

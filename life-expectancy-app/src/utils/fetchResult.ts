@@ -2,6 +2,18 @@ const SERVER_URL = '/api/predict';
 
 import { FormData } from '@/app/type';
 
+/**
+ * fetchResult
+ *
+ * Sends a POST request to the prediction API with the user’s form data,
+ * handles HTTP errors by extracting server-provided messages when available,
+ * and returns the numeric life-expectancy prediction.
+ *
+ * @param formData - all collected form inputs conforming to FormData
+ * @returns promise resolving to the predicted life expectancy (number)
+ * @throws Error with detailed message on non-OK responses
+ */
+
 export async function fetchResult(formData: FormData): Promise<number> {
   const response = await fetch(SERVER_URL, {
     method: 'POST',

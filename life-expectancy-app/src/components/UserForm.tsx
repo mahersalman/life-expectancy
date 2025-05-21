@@ -12,12 +12,22 @@ import LifestyleForm from './LifestyleForm';
 import MedicalHistoryForm from './MedicalHistoryForm';
 import PreventiveCareForm from './PreventiveCareForm';
 
+/**
+ * UserForm
+ *
+ * Manages the multi-step questionnaire:
+ * - Reads and syncs current step from URL query
+ * - Updates Lottie animation based on step
+ * - Renders the appropriate form section
+ * - Provides Back/Next (or Review) navigation buttons
+ */
+
 export default function UserForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setAnimationKey } = useLottie();
 
-  const total = 4;
+  const total = 4; // Total number of form steps
   const params = new URLSearchParams(location.search);
   const paramStep = Number(params.get('step'));
   const initialStep = !isNaN(paramStep) && paramStep >= 0 && paramStep < total ? paramStep : 0;
@@ -39,9 +49,13 @@ export default function UserForm() {
     setAnimationKey(keys[step]);
   }, [step, setAnimationKey]);
 
+  // Move forward or to review page if on last step
   const next = () => (step < total - 1 ? setStep((s) => s + 1) : navigate('/review'));
+
+  // Move backward
   const back = () => step > 0 && setStep((s) => s - 1);
 
+  // Render the form component for the current step
   const renderStep = () => {
     switch (step) {
       case 0:

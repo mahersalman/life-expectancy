@@ -1,19 +1,31 @@
-// src/utils/tips.ts
-
 import { FormData, PersonalInfo, Lifestyle, MedicalHistory, PreventiveCare } from '@/app/type';
 
+/**
+ * TipCondition<T>
+ *
+ * Defines a check function and message for generating health tips.
+ * - check: returns true when the tip applies to the given field value
+ * - message: advice shown when check passes
+ */
 export interface TipCondition<T> {
   check: (value: T, allData?: FormData) => boolean;
   message: string;
 }
 
-// Union of every field in FormData
+// Gather all possible form field keys across sections
 type AllFieldKeys =
   | keyof PersonalInfo
   | keyof Lifestyle
   | keyof MedicalHistory
   | keyof PreventiveCare;
 
+/**
+ * tips
+ *
+ * Maps each field key to an array of TipConditions.
+ * At results time, the app evaluates each condition against the user's data
+ * and displays any messages whose checks return true.
+ */
 export const tips: Record<AllFieldKeys, TipCondition<never>[]> = {
   // PersonalInfo
   height: [],

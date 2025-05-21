@@ -13,6 +13,12 @@ import Results from '@components/Results';
 import InfoPanel from '@/components/InfoPanel';
 import Simulator from '@/components/Simulator';
 
+/**
+ * Main entry component that sets up layout, animations, and routing
+ * Name: Main
+ * Inputs: none (uses React Router, Framer Motion, Lottie contexts)
+ * Purpose: Bootstraps the app shell and renders pages based on route
+ */
 export default function Main() {
   const navigate = useNavigate();
   const { animationData } = useLottie();

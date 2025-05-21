@@ -1,4 +1,3 @@
-// src/components/Review.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -9,6 +8,7 @@ import { useLottie } from '@/context/LottieContext';
 
 import ReviewCard from './ReviewCard';
 
+// Define steps with keys matching formData sections and display titles
 const steps = [
   { key: 'personalInfo' as const, title: 'Personal Information' },
   { key: 'lifestyle' as const, title: 'Lifestyle Habits' },
@@ -16,18 +16,34 @@ const steps = [
   { key: 'preventiveCare' as const, title: 'Preventive Care' },
 ];
 
+/**
+ * Review
+ *
+ * Presents each form section summary in a carousel-style interface.
+ * Users can navigate through sections, edit entries, and proceed to results.
+ */
+
 export default function Review() {
   const { setAnimationKey } = useLottie();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(0);
 
+  /**
+   * prev
+   * Decrement step index and set animation direction to left
+   */
   const prev = () => {
     if (step > 0) {
       setDir(-1);
       setStep((s) => s - 1);
     }
   };
+
+  /**
+   * next
+   * Increment step index and set animation direction to right
+   */
   const next = () => {
     if (step < steps.length - 1) {
       setDir(1);
@@ -35,10 +51,15 @@ export default function Review() {
     }
   };
 
+  /**
+   * handleEdit
+   * Navigates back to the form at the current step for editing
+   */
   const handleEdit = () => {
     navigate(`/form?step=${step}`);
   };
 
+  // Set Lottie animation to 'review' on mount
   useEffect(() => {
     setAnimationKey('review');
   }, []);

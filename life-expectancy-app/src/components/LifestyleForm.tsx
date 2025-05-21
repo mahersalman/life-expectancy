@@ -6,10 +6,26 @@ import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { lifestyleQuestions } from '@/utils/Questions';
 
+/**
+ * LifestyleForm
+ *
+ * Step 2 of 4: collects user lifestyle habits and routines.
+ *
+ * - Handles both numeric (sleepHours) and radio/enumeration inputs
+ * - Supports mobile-friendly dropdowns for enum selections
+ * - Updates form context state on input changes
+ */
 export default function LifestyleForm() {
   const { formData, setFormData } = useFormContext();
   const { lifestyle } = formData;
 
+  /**
+   * handleChange
+   * Updates lifestyle state based on input type
+   * @param name - question key (e.g., 'smokerStatus')
+   * @param raw - raw input value from event
+   * @param type - 'number' or 'radio'
+   */
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {
     let value: number | boolean = 0;
     if (type === 'number') {

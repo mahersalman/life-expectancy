@@ -30,6 +30,13 @@ const animationMap: Record<AnimationKey, object> = {
   plus: Plus,
 };
 
+/**
+ * LottieContextValue
+ *
+ * @property animationKey - the current selected animation key
+ * @property animationData - the JSON data for the selected Lottie animation
+ * @property setAnimationKey - callback to change the active animation key
+ */
 interface LottieContextValue {
   animationKey: AnimationKey;
   animationData: object;
@@ -38,6 +45,18 @@ interface LottieContextValue {
 
 const LottieContext = createContext<LottieContextValue | undefined>(undefined);
 
+/**
+ * LottieProvider
+ *
+ * Wraps children with LottieContext, managing:
+ * - animationKey state (default: 'writing')
+ * - memoized animationData based on the current key
+ *
+ * Usage:
+ * <LottieProvider>
+ *   <YourApp />
+ * </LottieProvider>
+ */
 export function LottieProvider({ children }: { children: ReactNode }) {
   const [animationKey, setAnimationKey] = useState<AnimationKey>('writing');
   // memoize the data so it only changes when key changes
@@ -50,6 +69,15 @@ export function LottieProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * useLottie
+ *
+ * Custom hook to consume LottieContext.
+ * Throws an error if used outside of LottieProvider.
+ *
+ * Returns:
+ * { animationKey, animationData, setAnimationKey }
+ */
 export function useLottie() {
   const ctx = useContext(LottieContext);
   if (!ctx) {

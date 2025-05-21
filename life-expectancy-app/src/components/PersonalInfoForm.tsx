@@ -1,4 +1,3 @@
-// src/components/PersonalInfoForm.tsx
 'use client';
 
 import React, { useEffect } from 'react';
@@ -6,6 +5,15 @@ import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { personalInfoQuestions } from '@/utils/Questions';
 
+/**
+ * PersonalInfoForm
+ *
+ * First step of the multi-step form capturing basic user details:
+ * - Sex (radio)
+ * - Height (number)
+ * - Weight (number)
+ * Automatically recalculates BMI on height or weight change.
+ */
 export default function PersonalInfoForm() {
   const { formData, setFormData } = useFormContext();
   const { personalInfo } = formData;
@@ -28,6 +36,13 @@ export default function PersonalInfoForm() {
     }
   }, [height, weight, personalInfo.bmi, setFormData]);
 
+  /**
+   * handleChange
+   * Updates the corresponding field in personalInfo
+   * @param name - question key ('sex', 'height', 'weight')
+   * @param raw - input string value
+   * @param type - 'number' or 'radio'
+   */
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {
     let value: number | string;
     if (type === 'number') {

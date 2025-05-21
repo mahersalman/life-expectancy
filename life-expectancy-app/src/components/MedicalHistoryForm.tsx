@@ -5,10 +5,25 @@ import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { medicalHistoryQuestions } from '@/utils/Questions';
 
+/**
+ * MedicalHistoryForm
+ *
+ * Step 3 of 4: captures user medical history via radio inputs.
+ *
+ * - Reads current medicalHistory from context
+ * - Updates context using handleChange
+ * - Renders a scrollable list of questions with fade overlays
+ * - Applies animated entrance via Framer Motion
+ */
 export default function MedicalHistoryForm() {
   const { formData, setFormData } = useFormContext();
   const { medicalHistory } = formData;
 
+  /**
+   * handleChange
+   * @param name - question key (e.g., 'hadHeartAttack')
+   * @param raw - radio input value ('0' or '1')
+   */
   const handleChange = (name: string, raw: string) => {
     const value = raw === '1';
     setFormData((prev) => ({

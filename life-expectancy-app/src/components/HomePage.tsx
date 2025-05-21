@@ -7,6 +7,15 @@ import { useLottie } from '@/context/LottieContext';
 import Lottie from 'lottie-react';
 import CareCompanion from '@/Lottie/CareCompanion.json';
 
+/**
+ * HomePage
+ *
+ * Landing screen for the Life Expectancy Calculator:
+ * - Sets Lottie to 'welcome' animation on mount
+ * - Displays a Lottie animation and introduction text
+ * - Shows four category cards for each form section
+ * - 'Get Started' button navigates to the form
+ */
 const categories = [
   { key: 'step1', title: 'Personal Information', emoji: '👤' },
   { key: 'step2', title: 'Lifestyle', emoji: '🏃' },
