@@ -1,5 +1,12 @@
 'use client';
 
+/**
+ * Question type
+ *
+ * Union defining a form question schema:
+ * - number: numeric input with optional min/max
+ * - radio: selectable options list
+ */
 export type Question =
   | {
       name: string;
@@ -17,7 +24,12 @@ export type Question =
       options: { label: string; value: string }[];
     };
 
-// 1. Personal Information
+/**
+ * personalInfoQuestions
+ *
+ * Inputs: sex (radio), height (number), weight (number)
+ * Purpose: Collect basic demographic and anthropometric data
+ */
 export const personalInfoQuestions: Question[] = [
   {
     name: 'sex',
@@ -45,7 +57,12 @@ export const personalInfoQuestions: Question[] = [
   },
 ];
 
-// 2. Lifestyle
+/**
+ * lifestyleQuestions
+ *
+ * Inputs: smokerStatus, eCigaretteUsage, physicalActivities, sleepHours, alcoholDrinkers
+ * Purpose: Capture lifestyle habits affecting health
+ */
 export const lifestyleQuestions: Question[] = [
   {
     name: 'smokerStatus',
@@ -101,7 +118,16 @@ export const lifestyleQuestions: Question[] = [
   },
 ];
 
-// 3. Medical History
+/**
+ * medicalHistoryQuestions
+ *
+ * Inputs: hadHeartAttack, hadAngina, hadStroke, hadAsthma, hadCOPD,
+ *         hadDepressiveDisorder, hadKidneyDisease, hadArthritis,
+ *         hadDiabetes, deafOrHardOfHearing, blindOrVisionDifficulty,
+ *         difficultyConcentrating, difficultyWalking,
+ *         difficultyDressingBathing, difficultyErrands
+ * Purpose: Record past diagnoses and functional limitations
+ */
 export const medicalHistoryQuestions: Question[] = [
   {
     name: 'hadHeartAttack',
@@ -255,7 +281,12 @@ export const medicalHistoryQuestions: Question[] = [
   },
 ];
 
-// 4. Preventive Care
+/**
+ * preventiveCareQuestions
+ *
+ * Inputs: fluVaxLast12, pneumoVaxEver, tetanusLast10Tdap, highRiskLastYear
+ * Purpose: Track vaccination and risk-group status for preventive measures
+ */
 export const preventiveCareQuestions: Question[] = [
   {
     name: 'fluVaxLast12',

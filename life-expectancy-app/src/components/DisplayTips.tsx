@@ -6,6 +6,15 @@ import { useFormContext } from '@/context/FormContext';
 import { tips, TipCondition } from '@/utils/Tips';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+/**
+ * DisplayTips
+ *
+ * Generates and displays personalized health tip messages based on form data.
+ * - Flattens formData sections into a single object
+ * - Applies each TipCondition to collect relevant messages
+ * - Paginates tips for small and large screens (3 or 6 per page)
+ * - Provides navigation controls when multiple pages exist
+ */
 export default function DisplayTips() {
   const { formData } = useFormContext();
 

@@ -3,20 +3,22 @@
 import React from 'react';
 
 interface SliderWithLabelsProps {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step?: number;
-  originalValue?: number;
-  onChange: (newValue: number) => void;
-  optionalNote?: string;
-  tickLabels?: string[];
+  label: string; // Display label for the slider
+  value: number; // Current slider value
+  min: number; // Minimum slider value
+  max: number; // Maximum slider value
+  step?: number; // Slider step increment (default: 1)
+  originalValue?: number; // Optional original value display
+  onChange: (newValue: number) => void; // Callback when slider changes
+  optionalNote?: string; // Additional note below slider
+  tickLabels?: string[]; // Custom labels for tick marks
 }
 
 /**
- * Choose a border color class based on the label.
- * Extend this map as you add more sliders.
+ * ACCENT_MAP
+ *
+ * Maps slider labels to a Tailwind border color class.
+ * Extend this map to support more slider themes.
  */
 const ACCENT_MAP: Record<string, string> = {
   'Sleep Hours': 'border-blue-400',
@@ -25,6 +27,27 @@ const ACCENT_MAP: Record<string, string> = {
   'E-Cigarette Usage': 'border-yellow-400',
 };
 
+/**
+ * SliderWithLabelsV2
+ *
+ * A stylized range input with:
+ * - Header showing label and current value
+ * - Custom tick marks and labels below the track
+ * - Accent-colored left border based on label
+ * - Optional original value and note displays
+ *
+ * Usage:
+ * <SliderWithLabelsV2
+ *   label="Sleep Hours"
+ *   value={7}
+ *   min={1}
+ *   max={14}
+ *   step={1}
+ *   onChange={(v) => setSleep(v)}
+ *   originalValue={6}
+ *   optionalNote="Ideal range is 7–9 hours"
+ * />
+ */
 export default function SliderWithLabelsV2({
   label,
   value,

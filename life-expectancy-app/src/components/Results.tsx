@@ -9,15 +9,29 @@ import { fetchResult } from '@/utils/fetchResult';
 import DisplayTips from './DisplayTips';
 import { initialFormData } from '@/utils/initialData';
 
+/**
+ * Results
+ *
+ * Fetches and displays the life expectancy prediction along with personalized tips.
+ *
+ * Behavior:
+ * - On mount, sets Lottie animation to 'protection' and calls fetchResult with formData
+ * - Manages loading, error, and result states
+ * - Renders title, loading message, error, or result value
+ * - Displays DisplayTips for actionable advice
+ * - Provides buttons to try the simulator or start over (reset formData)
+ */
 export default function Results() {
-  const { setAnimationKey } = useLottie();
-  const { formData, setFormData } = useFormContext();
-  const navigate = useNavigate();
+  const { setAnimationKey } = useLottie(); // Controls Lottie animation
+  const { formData, setFormData } = useFormContext(); // Access and reset form data
+  const navigate = useNavigate(); // Navigation hook
 
+  // Local UI state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<number | null>(null);
 
+  // Fetch prediction on component mount
   useEffect(() => {
     setAnimationKey('protection');
     fetchResult(formData)
@@ -32,6 +46,10 @@ export default function Results() {
       .finally(() => setLoading(false));
   }, [formData, setAnimationKey]);
 
+  /**
+   * handleStartOver
+   * Resets formData to initial values and navigates home
+   */
   const handleStartOver = () => {
     setFormData(initialFormData);
     navigate('/');

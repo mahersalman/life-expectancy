@@ -3,6 +3,17 @@
 import React from 'react';
 import { useFormContext } from '@/context/FormContext';
 
+/**
+ * ReviewCard
+ *
+ * Displays a summary of a specific form section from formData.
+ *
+ * Props:
+ * - categoryKey: key of the formData section to render (e.g., 'personalInfo')
+ * - title: section title displayed in the header
+ * - onEdit: optional callback to trigger editing this section
+ * - className: optional additional styling classes
+ */
 interface Props {
   categoryKey: keyof ReturnType<typeof useFormContext>['formData'];
   title: string;
@@ -11,7 +22,10 @@ interface Props {
 }
 
 export default function ReviewCard({ categoryKey, title, onEdit, className = '' }: Props) {
+  // Access global form data
   const { formData } = useFormContext();
+
+  // Dynamically select the relevant section object
   const section = formData[categoryKey] as unknown as Record<
     string,
     string | number | boolean | null

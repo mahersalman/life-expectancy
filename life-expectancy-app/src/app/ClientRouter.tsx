@@ -1,10 +1,18 @@
-// components/ClientRouter.tsx
 'use client';
 
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-// Dynamically import HashRouter (no SSR)
+/**
+ * ClientRouter
+ *
+ * Wraps the app in a hash-based router on the client side only.
+ * - Dynamically loads `HashRouter` from `react-router-dom` with SSR disabled
+ * - Ensures client-side routing without server-side rendering errors
+ *
+ * @param children - React nodes to be rendered within the router context
+ */
+
 const HashRouter = dynamic(() => import('react-router-dom').then((mod) => mod.HashRouter), {
   ssr: false,
 });

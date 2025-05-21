@@ -5,10 +5,25 @@ import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { preventiveCareQuestions } from '@/utils/Questions';
 
+/**
+ * PreventiveCareForm
+ *
+ * Renders the final form step for preventive care questions.
+ *
+ * - Reads existing preventiveCare state from context
+ * - Updates context on selection via handleChange
+ * - Animates headers and question list
+ */
 export default function PreventiveCareForm() {
   const { formData, setFormData } = useFormContext();
   const { preventiveCare } = formData;
 
+  /**
+   * handleChange
+   * Converts radio string value to boolean and updates context state
+   * @param name - question key (e.g., 'fluVaxLast12')
+   * @param raw - raw radio input value ('0'/'1')
+   */
   const handleChange = (name: string, raw: string) => {
     const value = raw === '1';
     setFormData((prev) => ({

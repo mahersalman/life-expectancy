@@ -3,6 +3,14 @@
 import React, { useState } from 'react';
 import { Info, X } from 'lucide-react';
 
+/**
+ * InfoPanel
+ *
+ * Floating info button that opens an overlay with project details:
+ * - Button: fixed at bottom-right, toggles open state
+ * - Overlay: semi-transparent backdrop; click outside or on X to close
+ * - Content: project overview, GitHub link, developer profiles, feedback survey
+ */
 export default function InfoPanel() {
   const [open, setOpen] = useState(false);
 

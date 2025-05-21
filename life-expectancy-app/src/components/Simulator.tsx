@@ -1,4 +1,3 @@
-// src/components/Simulator.tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -11,16 +10,27 @@ import { fetchResult } from '@/utils/fetchResult';
 import { SmokingStatus, ECigaretteUsage } from '@/app/type';
 import { useLottie } from '@/context/LottieContext';
 
+/**
+ * Simulator
+ *
+ * Interactive "what-if" panel that lets users adjust lifestyle and personal parameters
+ * to see their impact on the predicted life expectancy.
+ *
+ * Renders sliders and toggles bound to simData state and calls fetchResult to update prediction.
+ */
 export default function Simulator() {
+  // Access shared form data and navigation hooks
   const { formData } = useFormContext();
   const navigate = useNavigate();
   const { setAnimationKey } = useLottie();
 
+  // Local state for simulation data, loading/error, and result
   const [simData, setSimData] = useState(formData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<number | null>(null);
 
+  // BMI calculation utility
   const calcBMI = (height: number, weight: number) => {
     if (height <= 0 || weight <= 0) {
       return 0;
@@ -29,14 +39,21 @@ export default function Simulator() {
     const h = (height / 100) ** 2;
     return weight / h;
   };
+
+  // Set Lottie animation to "plus" on mount
   useEffect(() => {
     setAnimationKey('plus');
   }, [setAnimationKey]);
 
+  // Sync incoming formData to local simData when form updates
   useEffect(() => {
     setSimData(formData);
   }, [formData]);
 
+  /**
+   * updatePrediction
+   * Calls the backend API with simData and updates the result state
+   */
   const updatePrediction = async () => {
     console.log('ss', simData);
     setLoading(true);
