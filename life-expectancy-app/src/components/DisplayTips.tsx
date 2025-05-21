@@ -6,7 +6,7 @@ import { useFormContext } from '@/context/FormContext';
 import { tips, TipCondition } from '@/utils/Tips';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function Tips() {
+export default function DisplayTips() {
   const { formData } = useFormContext();
 
   // flatten data

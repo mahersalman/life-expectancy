@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLottie } from '@/context/LottieContext';
 import { useFormContext } from '@/context/FormContext';
 import { fetchResult } from '@/utils/fetchResult';
-import Tips from './Tips';
+import DisplayTips from './DisplayTips';
 import { initialFormData } from '@/utils/initialData';
 
 export default function Results() {
@@ -81,7 +81,7 @@ export default function Results() {
             <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800">
               Personalized Health Tips
             </h2>
-            <Tips />
+            <DisplayTips />
           </>
         )}
       </div>
