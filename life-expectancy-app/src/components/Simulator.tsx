@@ -21,6 +21,14 @@ export default function Simulator() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<number | null>(null);
 
+  const calcBMI = (height: number, weight: number) => {
+    if (height <= 0 || weight <= 0) {
+      return 0;
+    }
+
+    const h = (height / 100) ** 2;
+    return weight / h;
+  };
   useEffect(() => {
     setAnimationKey('plus');
   }, [setAnimationKey]);
@@ -30,6 +38,7 @@ export default function Simulator() {
   }, [formData]);
 
   const updatePrediction = async () => {
+    console.log('ss', simData);
     setLoading(true);
     setError(null);
     try {
@@ -41,7 +50,6 @@ export default function Simulator() {
       setLoading(false);
     }
   };
-
   return (
     <div className="flex flex-col items-center p-4 sm:p-6 md:p-8">
       <motion.div
@@ -96,7 +104,11 @@ export default function Simulator() {
               onChange={(v) =>
                 setSimData((prev) => ({
                   ...prev,
-                  personalInfo: { ...prev.personalInfo, weight: v },
+                  personalInfo: {
+                    ...prev.personalInfo,
+                    weight: v,
+                    bmi: calcBMI(prev.personalInfo.height, v),
+                  },
                 }))
               }
             />
