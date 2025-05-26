@@ -90,7 +90,7 @@ export default function PersonalInfoForm() {
         transition={{ duration: 0.4 }}
       >
         <span className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">
-          Step 1 of 4
+          Step 1 of 5
         </span>
         <h3 className="mt-1 text-2xl sm:text-3xl font-bold text-gray-800">Personal Information</h3>
         <p className="mt-1 text-gray-600 text-sm sm:text-base">

@@ -64,7 +64,7 @@ export default function LifestyleForm() {
         transition={{ duration: 0.4 }}
       >
         <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-          Step 2 of 4
+          Step 2 of 5
         </span>
         <h3 className="mt-1 text-2xl font-bold text-gray-800">Lifestyle</h3>
         <p className="mt-2 text-gray-600">Tell us about your daily habits and routines.</p>
