@@ -9,7 +9,9 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import PersonalInfoForm from './PersonalInfoForm';
 import LifestyleForm from './LifestyleForm';
-import MedicalHistoryForm from './MedicalHistoryForm';
+import MedicalHistoryFormPart1 from './MedicalHistoryFormPart1';
+import MedicalHistoryFormPart2 from './MedicalHistoryFormPart2';
+
 import PreventiveCareForm from './PreventiveCareForm';
 
 /**
@@ -27,7 +29,7 @@ export default function UserForm() {
   const location = useLocation();
   const { setAnimationKey } = useLottie();
 
-  const total = 4; // Total number of form steps
+  const total = 5; // Total number of form steps
   const params = new URLSearchParams(location.search);
   const paramStep = Number(params.get('step'));
   const initialStep = !isNaN(paramStep) && paramStep >= 0 && paramStep < total ? paramStep : 0;
@@ -45,7 +47,7 @@ export default function UserForm() {
 
   // Swap Lottie animation
   useEffect(() => {
-    const keys = ['writing', 'habits', 'search', 'vaccinate'] as const;
+    const keys = ['writing', 'habits', 'search', 'search', 'vaccinate'] as const;
     setAnimationKey(keys[step]);
   }, [step, setAnimationKey]);
 
@@ -63,8 +65,10 @@ export default function UserForm() {
       case 1:
         return <LifestyleForm />;
       case 2:
-        return <MedicalHistoryForm />;
+        return <MedicalHistoryFormPart1 />;
       case 3:
+        return <MedicalHistoryFormPart2 />;
+      case 4:
         return <PreventiveCareForm />;
       default:
         return null;
