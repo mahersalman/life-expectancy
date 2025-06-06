@@ -4,21 +4,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { medicalHistoryQuestions } from '@/utils/Questions';
+import { useLanguage } from '@/context/LanguageContext';
+import { MedicalHistoryFormPart2Text } from 'Translations/medicalHistoryFormPart2Text';
 
-/**
- * Renders the second half of medical history questions, continuing from Part1.
- * Reads/writes context state, and provides a consistent animated header.
- */
 export default function MedicalHistoryFormPart2() {
   const { formData, setFormData } = useFormContext();
   const { medicalHistory } = formData;
+  const { language } = useLanguage();
 
-  /**
-   * handleChange
-   * @param name - key of the question
-   * @param raw  - string representation ('0' or '1')
-   * Updates the corresponding boolean value in context state
-   */
   const handleChange = (name: string, raw: string) => {
     const value = raw === '1';
     setFormData((prev) => ({
@@ -27,12 +20,12 @@ export default function MedicalHistoryFormPart2() {
     }));
   };
 
-  // Filter only radio questions, then slice off the first 8 to get the rest
   const radios = medicalHistoryQuestions.filter((q) => q.type === 'radio');
-  const slice = radios.slice(8);
+  const slice = radios.slice(8); // second half
 
   return (
     <div className="relative p-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg w-full max-w-3xl mx-auto">
+      {/* Header */}
       <motion.div
         className="mb-6 text-center"
         initial={{ opacity: 0, y: -10 }}
@@ -40,14 +33,15 @@ export default function MedicalHistoryFormPart2() {
         transition={{ duration: 0.4 }}
       >
         <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-          Step 4 of 5
+          {MedicalHistoryFormPart2Text[language.code].step}
         </span>
         <h3 className="mt-1 text-3xl font-bold text-gray-800">
-          Almost There: More Medical History
+          {MedicalHistoryFormPart2Text[language.code].title}
         </h3>
-        <p className="mt-2 text-gray-600">A few more quick questions to complete your profile.</p>
+        <p className="mt-2 text-gray-600">{MedicalHistoryFormPart2Text[language.code].subtitle}</p>
       </motion.div>
 
+      {/* Question List */}
       <div className="space-y-4">
         {slice.map((q) => {
           const current = medicalHistory[q.name as keyof typeof medicalHistory] as boolean;
@@ -56,7 +50,9 @@ export default function MedicalHistoryFormPart2() {
               key={q.name}
               className="bg-white rounded-lg shadow p-4 flex flex-col sm:flex-row sm:items-center hover:shadow-lg transition-shadow"
             >
-              <div className="text-base text-gray-800 font-medium sm:w-3/4">{q.question}</div>
+              <div className="text-base text-gray-800 font-medium sm:w-3/4">
+                {q.question[language.code]}
+              </div>
               <div className="flex space-x-3 mt-3 sm:mt-0 sm:w-1/4 justify-center">
                 {q.options.map((opt) => {
                   const isSelected = current === (opt.value === '1');
@@ -77,7 +73,7 @@ export default function MedicalHistoryFormPart2() {
                         onChange={(e) => handleChange(q.name, e.target.value)}
                         className="hidden"
                       />
-                      {opt.label}
+                      {opt.label[language.code]}
                     </label>
                   );
                 })}

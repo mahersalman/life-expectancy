@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useLottie } from '@/context/LottieContext';
 import Lottie from 'lottie-react';
 import CareCompanion from '@/Lottie/CareCompanion.json';
+import { LanguageSelector } from '@/components/LanguageSelector';
+import { homePageText } from 'Translations/homePageText';
+import { useLanguage } from '@/context/LanguageContext';
 
 /**
  * HomePage
@@ -26,6 +29,8 @@ const categories = [
 export default function HomePage() {
   const navigate = useNavigate();
   const { setAnimationKey } = useLottie();
+  const { language } = useLanguage();
+  const text = homePageText[language.code];
 
   useEffect(() => {
     setAnimationKey('welcome');
@@ -45,21 +50,23 @@ export default function HomePage() {
 
       {/* Responsive headline */}
       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 text-center max-w-lg">
-        Welcome to the Life Expectancy Calculator!
+        {text.title}
       </h2>
-      <p className="max-w-md text-gray-600 text-center">
-        By answering four quick sections—Personal Info, Lifestyle, Medical History, and Preventive
-        Care—our XGBoost model will estimate your personalized life expectancy.
-      </p>
+      <p className="max-w-md text-gray-600 text-center">{text.description}</p>
 
       {/* Always two columns */}
       <div className="grid grid-cols-2 gap-4 w-full max-w-md sm:max-w-lg">
-        {categories.map(({ key, title, emoji }) => (
+        {categories.map(({ key, emoji }) => (
           <div key={key} className="flex flex-col items-center p-4 bg-white rounded-lg shadow">
             <div className="text-4xl">{emoji}</div>
-            <span className="mt-2 text-sm font-medium text-gray-700">{title}</span>
+            <span className="mt-2 text-sm font-medium text-gray-700">{text[`section_${key}`]}</span>
           </div>
         ))}
+      </div>
+
+      {/* Language Selector */}
+      <div className="w-full max-w-md sm:max-w-lg">
+        <LanguageSelector />
       </div>
 
       {/* Gradient “Get Started” button */}
@@ -73,7 +80,7 @@ export default function HomePage() {
           text-white transition-shadow hover:shadow-lg
         "
       >
-        Get Started
+        {text.getStarted}
       </motion.button>
     </motion.div>
   );

@@ -9,7 +9,8 @@ import { useFormContext } from '@/context/FormContext';
 import { fetchResult } from '@/utils/fetchResult';
 import { SmokingStatus, ECigaretteUsage } from '@/app/type';
 import { useLottie } from '@/context/LottieContext';
-
+import { useLanguage } from '@/context/LanguageContext';
+import { simulatorText } from 'Translations/simulatorText';
 /**
  * Simulator
  *
@@ -23,7 +24,8 @@ export default function Simulator() {
   const { formData } = useFormContext();
   const navigate = useNavigate();
   const { setAnimationKey } = useLottie();
-
+  const { language } = useLanguage();
+  const text = simulatorText[language.code];
   // Local state for simulation data, loading/error, and result
   const [simData, setSimData] = useState(formData);
   const [loading, setLoading] = useState(false);
@@ -55,7 +57,6 @@ export default function Simulator() {
    * Calls the backend API with simData and updates the result state
    */
   const updatePrediction = async () => {
-    console.log('ss', simData);
     setLoading(true);
     setError(null);
     try {
@@ -91,14 +92,14 @@ export default function Simulator() {
             bg-clip-text text-transparent
           "
         >
-          Life Expectancy Simulator
+          {text.title}
         </motion.h2>
 
         {/* Sliders */}
         <div className="space-y-4">
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
-              label="Sleep Hours"
+              label={text.sleep}
               value={simData.lifestyle.sleepHours}
               min={1}
               max={14}
@@ -112,7 +113,7 @@ export default function Simulator() {
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
-              label="Weight (kg)"
+              label={text.weight}
               value={simData.personalInfo.weight}
               min={30}
               max={200}
@@ -132,11 +133,11 @@ export default function Simulator() {
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
-              label="Smoker Status"
+              label={text.smokerStatus}
               value={simData.lifestyle.smokerStatus}
               min={0}
               max={3}
-              tickLabels={['Never', 'Former', 'Some days', 'Every day']}
+              tickLabels={text.smokerTicks}
               onChange={(v) =>
                 setSimData((prev) => ({
                   ...prev,
@@ -147,11 +148,11 @@ export default function Simulator() {
           </motion.div>
           <motion.div whileHover={{ scale: 1.02 }}>
             <SliderWithLabels
-              label="E-Cigarette Usage"
+              label={text.eCigaretteUsage}
               value={simData.lifestyle.eCigaretteUsage}
               min={0}
               max={3}
-              tickLabels={['Never', 'Former', 'Some days', 'Every day']}
+              tickLabels={text.ecigTicks}
               onChange={(v) =>
                 setSimData((prev) => ({
                   ...prev,
@@ -166,7 +167,7 @@ export default function Simulator() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <motion.div whileTap={{ scale: 0.95 }}>
             <ToggleWithLabel
-              label="Alcohol Drinker"
+              label={text.alcohol}
               value={simData.lifestyle.alcoholDrinkers}
               onChange={(v) =>
                 setSimData((prev) => ({
@@ -178,7 +179,7 @@ export default function Simulator() {
           </motion.div>
           <motion.div whileTap={{ scale: 0.95 }}>
             <ToggleWithLabel
-              label="Physical Activities"
+              label={text.physical}
               value={simData.lifestyle.physicalActivities}
               onChange={(v) =>
                 setSimData((prev) => ({
@@ -205,7 +206,7 @@ export default function Simulator() {
               disabled:opacity-50
             "
           >
-            {loading ? 'Running…' : 'Predict'}
+            {loading ? text.running : text.predict}
           </motion.button>
         </div>
 
@@ -219,11 +220,10 @@ export default function Simulator() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center mt-4 space-y-2"
           >
-            <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-              Estimated Life Expectancy
-            </h3>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800">{text.resultTitle}</h3>
             <p className="text-2xl sm:text-3xl font-bold text-green-600">
-              {result.toFixed(1)} <span className="text-sm sm:text-base text-gray-700">years</span>
+              {result.toFixed(1)}{' '}
+              <span className="text-sm sm:text-base text-gray-700">{text.years}</span>
             </p>
           </motion.div>
         )}
@@ -235,7 +235,7 @@ export default function Simulator() {
           onClick={() => navigate('/result')}
           className="text-sm sm:text-base text-gray-600 hover:text-gray-800 underline transition"
         >
-          ← Back to Results
+          {text.backToResults}
         </button>
       </div>
     </div>

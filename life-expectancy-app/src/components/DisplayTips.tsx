@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useFormContext } from '@/context/FormContext';
 import { tips, TipCondition } from '@/utils/Tips';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
+import { useLanguage } from '@/context/LanguageContext';
 /**
  * DisplayTips
  *
@@ -16,6 +16,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
  * - Provides navigation controls when multiple pages exist
  */
 export default function DisplayTips() {
+  const { language } = useLanguage();
   const { formData } = useFormContext();
 
   // flatten data
@@ -34,7 +35,7 @@ export default function DisplayTips() {
   Object.entries(tips).forEach(([field, conditions]) => {
     const value = flatData[field];
     (conditions as TipCondition<unknown>[]).forEach((cond) => {
-      if (cond.check(value, formData)) messages.push(cond.message);
+      if (cond.check(value, formData)) messages.push(cond.message[language.code]);
     });
   });
   useEffect(() => {

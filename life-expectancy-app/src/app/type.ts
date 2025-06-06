@@ -1,3 +1,10 @@
+export type LanguageType = 'en' | 'he' | 'ar';
+export type Direction = 'ltr' | 'rtl';
+export interface LanguageConfig {
+  code: LanguageType;
+  dir: Direction;
+}
+
 export type SmokingStatus = 0 | 1 | 2 | 3;
 export type ECigaretteUsage = 0 | 1 | 2 | 3;
 
