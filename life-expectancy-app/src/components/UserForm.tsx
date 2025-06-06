@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLottie } from '@/context/LottieContext';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import PersonalInfoForm from './PersonalInfoForm';
 import LifestyleForm from './LifestyleForm';
@@ -13,7 +12,8 @@ import MedicalHistoryFormPart1 from './MedicalHistoryFormPart1';
 import MedicalHistoryFormPart2 from './MedicalHistoryFormPart2';
 
 import PreventiveCareForm from './PreventiveCareForm';
-
+import { userFormText } from 'Translations/userFormText';
+import { useLanguage } from '@/context/LanguageContext';
 /**
  * UserForm
  *
@@ -28,7 +28,8 @@ export default function UserForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setAnimationKey } = useLottie();
-
+  const { language } = useLanguage();
+  const text = userFormText[language.code];
   const total = 5; // Total number of form steps
   const params = new URLSearchParams(location.search);
   const paramStep = Number(params.get('step'));
@@ -55,7 +56,13 @@ export default function UserForm() {
   const next = () => (step < total - 1 ? setStep((s) => s + 1) : navigate('/review'));
 
   // Move backward
-  const back = () => step > 0 && setStep((s) => s - 1);
+  const back = () => {
+    if (step == 0) {
+      navigate('/');
+    } else {
+      setStep((s) => s - 1);
+    }
+  };
 
   // Render the form component for the current step
   const renderStep = () => {
@@ -96,18 +103,15 @@ export default function UserForm() {
           {/* Back button */}
           <button
             onClick={back}
-            disabled={step === 0}
             className="
               flex items-center justify-center space-x-2
               w-auto px-5 py-3
               bg-white border-2 border-gray-300
               rounded-full shadow-sm
-              disabled:opacity-50 disabled:cursor-not-allowed
               hover:bg-gray-100 transition
             "
           >
-            <ArrowLeft size={20} />
-            <span className="text-gray-700 font-medium">Back</span>
+            <span className="text-gray-700 font-medium">{text.back}</span>
           </button>
 
           {/* Next / Review button */}
@@ -123,8 +127,7 @@ export default function UserForm() {
               transition
             "
           >
-            <span className="font-medium">{step < total - 1 ? 'Next' : 'Review'}</span>
-            <ArrowRight size={20} />
+            <span className="font-medium">{step < total - 1 ? text.next : text.review}</span>
           </button>
         </div>
       </div>

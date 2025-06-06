@@ -5,16 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLottie } from '@/context/LottieContext';
-
+import { useLanguage } from '@/context/LanguageContext';
 import ReviewCard from './ReviewCard';
-
-// Define steps with keys matching formData sections and display titles
-const steps = [
-  { key: 'personalInfo' as const, title: 'Personal Information' },
-  { key: 'lifestyle' as const, title: 'Lifestyle Habits' },
-  { key: 'medicalHistory' as const, title: 'Medical History' },
-  { key: 'preventiveCare' as const, title: 'Preventive Care' },
-];
+import { reviewText } from 'Translations/reviewText';
 
 /**
  * Review
@@ -28,6 +21,16 @@ export default function Review() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(0);
+  const { language } = useLanguage();
+  const text = reviewText[language.code];
+
+  // Define steps with keys matching formData sections and display titles
+  const steps = [
+    { key: 'personalInfo' as const, title: text.steps.personalInfo },
+    { key: 'lifestyle' as const, title: text.steps.lifestyle },
+    { key: 'medicalHistory' as const, title: text.steps.medicalHistory },
+    { key: 'preventiveCare' as const, title: text.steps.preventiveCare },
+  ];
 
   /**
    * prev
@@ -114,7 +117,7 @@ export default function Review() {
         onClick={() => navigate('/result')}
         className="w-full max-w-sm py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-shadow hover:shadow-lg"
       >
-        Get Predictions
+        {text.getPredictions}
       </button>
     </div>
   );

@@ -5,6 +5,7 @@ import './globals.css';
 import ClientRouter from './ClientRouter';
 import { LottieProvider } from '@/context/LottieContext';
 import { FormProvider } from '@/context/FormContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,9 +31,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClientRouter>
-          <FormProvider>
-            <LottieProvider>{children}</LottieProvider>
-          </FormProvider>
+          <LanguageProvider>
+            <FormProvider>
+              <LottieProvider>{children}</LottieProvider>
+            </FormProvider>
+          </LanguageProvider>
         </ClientRouter>
       </body>
     </html>

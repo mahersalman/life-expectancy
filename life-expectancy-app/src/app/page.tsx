@@ -12,6 +12,8 @@ import Review from '@components/Review';
 import Results from '@components/Results';
 import InfoPanel from '@/components/InfoPanel';
 import Simulator from '@/components/Simulator';
+import { useLanguage } from '@/context/LanguageContext';
+import { FloatingLanguageSelector } from '@components/LanguageSelector';
 
 /**
  * Main entry component that sets up layout, animations, and routing
@@ -22,9 +24,10 @@ import Simulator from '@/components/Simulator';
 export default function Main() {
   const navigate = useNavigate();
   const { animationData } = useLottie();
-
+  const { language } = useLanguage();
   return (
     <div
+      dir={language.dir}
       className="
     relative flex flex-col items-center
     pt-8 sm:pt-12 md:pt-16
@@ -33,6 +36,7 @@ export default function Main() {
     bg-gradient-to-br from-blue-50 to-cyan-50
   "
     >
+      <FloatingLanguageSelector />
       {/* App title */}
       <motion.h1
         onClick={() => navigate('/')}

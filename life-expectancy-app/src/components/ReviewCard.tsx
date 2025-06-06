@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { useFormContext } from '@/context/FormContext';
-
+import { useLanguage } from '@/context/LanguageContext';
+import { reviewCardText } from 'Translations/reviewCardText';
 /**
  * ReviewCard
  *
@@ -22,31 +23,22 @@ interface Props {
 }
 
 export default function ReviewCard({ categoryKey, title, onEdit, className = '' }: Props) {
-  // Access global form data
   const { formData } = useFormContext();
+  const { language } = useLanguage();
 
-  // Dynamically select the relevant section object
   const section = formData[categoryKey] as unknown as Record<
     string,
     string | number | boolean | null
   >;
 
-  // Turn camelCase or snake_case into readable labels
-  const humanize = (key: string) =>
-    key
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/_/g, ' ')
-      .replace(/^./, (str) => str.toUpperCase());
+  const localizedLabels = reviewCardText[language.code][categoryKey] || {};
+  const meta = reviewCardText[language.code].meta;
 
   return (
     <div
-      className={`
-        h-full w-full bg-white rounded-2xl shadow-md
-        p-6 overflow-auto border border-gray-200
-        ${className}
-      `}
+      className={`h-full w-full bg-white rounded-2xl shadow-md p-6 overflow-auto border border-gray-200 ${className}`}
     >
-      {/* header + edit */}
+      {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold text-indigo-700 uppercase tracking-wide">{title}</h2>
         {onEdit && (
@@ -54,24 +46,23 @@ export default function ReviewCard({ categoryKey, title, onEdit, className = '' 
             onClick={onEdit}
             className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition"
           >
-            Edit
+            {meta.edit}
           </button>
         )}
       </div>
 
+      {/* Data Fields */}
       <dl className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {Object.entries(section).map(([key, val]) => (
           <div
             key={key}
-            className="
-              p-4 bg-gray-50 rounded-lg shadow-sm
-              border-l-4 border-indigo-500
-              hover:shadow-md transition-shadow
-            "
+            className="p-4 bg-gray-50 rounded-lg shadow-sm border-l-4 border-indigo-500 hover:shadow-md transition-shadow"
           >
-            <dt className="text-sm font-medium text-indigo-600 mb-1">{humanize(key)}</dt>
+            <dt className="text-sm font-medium text-indigo-600 mb-1">
+              {(localizedLabels as Record<string, string>)[key] || key}
+            </dt>
             <dd className="text-lg font-semibold text-gray-800">
-              {typeof val === 'boolean' ? (val ? 'Yes' : 'No') : String(val ?? '—')}
+              {typeof val === 'boolean' ? (val ? meta.yes : meta.no) : String(val ?? '—')}
             </dd>
           </div>
         ))}

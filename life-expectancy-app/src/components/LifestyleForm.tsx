@@ -1,31 +1,23 @@
-// src/components/LifestyleForm.tsx
 'use client';
 
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useFormContext } from '@/context/FormContext';
 import { lifestyleQuestions } from '@/utils/Questions';
+import { useLanguage } from '@/context/LanguageContext';
+import { lifestyleFormText } from 'Translations/LifestyleFormText';
 
 /**
  * LifestyleForm
  *
- * Step 2 of 4: collects user lifestyle habits and routines.
- *
- * - Handles both numeric (sleepHours) and radio/enumeration inputs
- * - Supports mobile-friendly dropdowns for enum selections
- * - Updates form context state on input changes
+ * Step 2 of 5: collects user lifestyle habits and routines.
  */
 export default function LifestyleForm() {
   const { formData, setFormData } = useFormContext();
   const { lifestyle } = formData;
+  const { language } = useLanguage();
+  const t = lifestyleFormText[language.code];
 
-  /**
-   * handleChange
-   * Updates lifestyle state based on input type
-   * @param name - question key (e.g., 'smokerStatus')
-   * @param raw - raw input value from event
-   * @param type - 'number' or 'radio'
-   */
   const handleChange = (name: string, raw: string, type: 'number' | 'radio') => {
     let value: number | boolean = 0;
     if (type === 'number') {
@@ -44,13 +36,8 @@ export default function LifestyleForm() {
   };
 
   return (
-    <div
-      className="
-        relative p-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg
-        w-full max-w-2xl mx-auto
-      "
-    >
-      {/* Green accent */}
+    <div className="relative p-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg w-full max-w-2xl mx-auto">
+      {/* Decorative blob */}
       <div
         className="absolute -top-8 -right-8 w-28 h-28 bg-green-100 rounded-full opacity-50"
         aria-hidden
@@ -66,8 +53,8 @@ export default function LifestyleForm() {
         <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
           Step 2 of 5
         </span>
-        <h3 className="mt-1 text-2xl font-bold text-gray-800">Lifestyle</h3>
-        <p className="mt-2 text-gray-600">Tell us about your daily habits and routines.</p>
+        <h3 className="mt-1 text-2xl font-bold text-gray-800">{t.title}</h3>
+        <p className="mt-2 text-gray-600">{t.subtitle}</p>
       </motion.div>
 
       {/* Form */}
@@ -82,12 +69,11 @@ export default function LifestyleForm() {
           const isEnumGroup = ['smokerStatus', 'eCigaretteUsage'].includes(q.name);
           const isBoolGroup = ['physicalActivities', 'alcoholDrinkers'].includes(q.name);
 
-          // Number inputs
           if (q.type === 'number') {
             return (
               <div key={q.name} className="flex flex-col items-center">
                 <label htmlFor={q.name} className="mb-2 text-gray-700 font-medium text-center">
-                  {q.question}
+                  {q.question[language.code]}
                 </label>
                 <input
                   id={q.name}
@@ -97,37 +83,35 @@ export default function LifestyleForm() {
                   max={q.max}
                   value={current as number}
                   onChange={(e) => handleChange(q.name, e.target.value, 'number')}
-                  className="
-                    w-48 h-12 text-center text-lg p-2
-                    border border-gray-300 rounded-lg
-                    focus:outline-none focus:ring-2 focus:ring-green-300
-                  "
+                  className="w-48 h-12 text-center text-lg p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
                 />
               </div>
             );
           }
 
-          // Radio groups: dropdown on mobile only for enums, boxes always for bools
           return (
             <fieldset key={q.name} className="flex flex-col items-center">
-              <legend className="mb-2 font-medium text-gray-700 text-center">{q.question}</legend>
+              <legend className="mb-2 font-medium text-gray-700 text-center">
+                {q.question[language.code]}
+              </legend>
 
+              {/* Dropdown on mobile for enums */}
               {isEnumGroup && (
-                // dropdown only on phones
                 <select
                   className="block sm:hidden w-full max-w-xs text-center p-2 mb-4 border border-gray-300 rounded-lg"
                   value={String(current as number)}
                   onChange={(e) => handleChange(q.name, e.target.value, 'radio')}
                 >
-                  <option value="">Select...</option>
+                  <option value="">{t.selectPlaceholder}</option>
                   {q.options.map((opt) => (
                     <option key={opt.value} value={opt.value}>
-                      {opt.label}
+                      {opt.label[language.code]}
                     </option>
                   ))}
                 </select>
               )}
 
+              {/* Radio buttons for desktop */}
               <div
                 className={`
                   ${isEnumGroup ? 'hidden sm:grid grid-cols-4 gap-4' : 'grid grid-cols-2 gap-4'}
@@ -162,7 +146,7 @@ export default function LifestyleForm() {
                         onChange={(e) => handleChange(q.name, e.target.value, 'radio')}
                         className="hidden"
                       />
-                      {opt.label}
+                      {opt.label[language.code]}
                     </label>
                   );
                 })}
