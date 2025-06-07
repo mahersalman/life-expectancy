@@ -68,13 +68,13 @@ export function FloatingLanguageSelector() {
           className="
             bg-white text-gray-700 shadow-lg
             hover:bg-indigo-50 transition
-            px-4 py-2 rounded-lg
+            px-2 py-2 rounded-3xl
             border border-gray-200
             text-sm font-medium flex items-center gap-x-1.5
           "
         >
           <span className="text-xl">🌐</span>
-          <span>{text[language.code]}</span>
+          <span className={`${open ? 'inline' : 'hidden md:inline'}`}>{text[language.code]}</span>
         </button>
 
         {/* Dropdown */}

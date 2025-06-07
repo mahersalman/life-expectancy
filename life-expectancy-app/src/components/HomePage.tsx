@@ -65,7 +65,7 @@ export default function HomePage() {
       </div>
 
       {/* Language Selector */}
-      <div className="w-full max-w-md sm:max-w-lg">
+      <div dir="ltr" className="w-full max-w-xs sm:max-w-md mx-auto px-2">
         <LanguageSelector />
       </div>
 

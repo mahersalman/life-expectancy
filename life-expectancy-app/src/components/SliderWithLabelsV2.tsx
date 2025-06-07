@@ -67,6 +67,7 @@ export default function SliderWithLabelsV2({
 
   return (
     <div
+      dir="ltr"
       className={`
         p-4 mb-6 bg-white rounded-lg shadow-sm
         border-l-4 ${accentClass}
