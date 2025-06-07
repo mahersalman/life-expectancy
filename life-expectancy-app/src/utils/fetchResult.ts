@@ -1,5 +1,5 @@
-const SERVER_URL = '/api/predict';
-// const SERVER_URL = 'http://16.171.3.37/predict';
+// const SERVER_URL = '/api/predict';
+const SERVER_URL = 'http://16.171.3.37/predict';
 
 import { FormData } from '@/app/type';
 

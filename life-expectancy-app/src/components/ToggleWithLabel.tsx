@@ -28,7 +28,7 @@ export default function ToggleWithLabel({
   onChange,
 }: ToggleWithLabelProps) {
   return (
-    <div className="p-4 mb-6 bg-white rounded-lg shadow-sm border-l-4 border-teal-400">
+    <div dir="ltr" className="p-4 mb-6 bg-white rounded-lg shadow-sm border-l-4 border-teal-400">
       <div className="flex items-center space-x-3">
         <input
           type="checkbox"
