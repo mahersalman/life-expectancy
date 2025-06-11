@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Lottie from 'lottie-react';
 import { useLottie } from '@/context/LottieContext';
@@ -14,6 +14,7 @@ import InfoPanel from '@/components/InfoPanel';
 import Simulator from '@/components/Simulator';
 import { useLanguage } from '@/context/LanguageContext';
 import { FloatingLanguageSelector } from '@components/LanguageSelector';
+import Logo from '@/components/logo';
 
 /**
  * Main entry component that sets up layout, animations, and routing
@@ -22,7 +23,6 @@ import { FloatingLanguageSelector } from '@components/LanguageSelector';
  * Purpose: Bootstraps the app shell and renders pages based on route
  */
 export default function Main() {
-  const navigate = useNavigate();
   const { animationData } = useLottie();
   const { language } = useLanguage();
   return (
@@ -38,21 +38,7 @@ export default function Main() {
     >
       <FloatingLanguageSelector />
       {/* App title */}
-      <motion.h1
-        onClick={() => navigate('/')}
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="
-          text-3xl sm:text-4xl md:text-5xl
-          font-extrabold text-blue-700
-          mb-8
-          text-center cursor-pointer whitespace-nowrap
-        "
-      >
-        Life Expectancy Calculator
-      </motion.h1>
-
+      <Logo />
       {/* Animated mascot (hidden on small) */}
       <motion.div
         initial={{ x: 300, y: -300, opacity: 0, scale: 0.6 }}
