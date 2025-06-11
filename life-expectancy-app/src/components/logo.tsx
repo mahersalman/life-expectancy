@@ -6,6 +6,7 @@ export default function Logo() {
 
   return (
     <motion.h1
+      dir="ltr"
       onClick={() => navigate('/')}
       initial={{
         y: -30,
