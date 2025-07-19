@@ -191,6 +191,7 @@ The model demonstrates unbiased predictions with normally distributed residuals 
 ## ✉️ Contact
 
 - **Maher Salman** — [linkedin.com/in/maher-salman](https://www.linkedin.com/in/maher-salman/)
+- **Adan Butto** — [linkedin.com/in/adan-butto-659288232](https://www.linkedin.com/in/adan-butto-659288232/)
 
 ## 🤝 Contributing
 
