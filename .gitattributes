@@ -1,1 +1,2 @@
 Data/heart_2022_with_nans.csv filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
